@@ -1,0 +1,152 @@
+---
+title: "Prices"
+description: "Every prices command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## create
+
+Create price
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--amount` | string |  |  |
+| `--billing_model` | string | yes |  |
+| `--billing_period` | string | yes |  |
+| `--billing_period_count` | integer |  |  |
+| `--currency` | string | yes |  |
+| `--description` | string |  |  |
+| `--display_name` | string |  |  |
+| `--end_date` | string |  |  |
+| `--entity_id` | string | yes |  |
+| `--entity_type` | string | yes |  |
+| `--group_id` | string |  | GroupID is the id of the group to add the price to |
+| `--invoice_cadence` | string | yes |  |
+| `--lookup_key` | string |  |  |
+| `--meter_id` | string |  |  |
+| `--min_quantity` | integer |  | MinQuantity is the minimum quantity of the price |
+| `--price_unit_type` | string | yes |  |
+| `--start_date` | string |  |  |
+| `--tier_mode` | string |  |  |
+| `--trial_period_days` | integer |  |  |
+| `--type` | string | yes |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `filter_values` (object)
+- `metadata` (object)
+- `price_unit_config` (object)
+- `tiers` (array)
+- `transform_quantity` (object)
+</Note>
+
+```sh
+flexprice prices create --billing_model=<value> --billing_period=<value> --currency=<value> --entity_id=<value> --entity_type=<value> --invoice_cadence=<value> --price_unit_type=<value> --type=<value>
+```
+
+## create-bulk
+
+Create prices in bulk
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `items` (array)
+</Note>
+
+```sh
+flexprice prices create-bulk
+```
+
+## delete
+
+Delete price
+
+| Flag | Type | Required |
+|---|---|---|
+| `--end_date` | string |  |
+
+```sh
+flexprice prices delete
+```
+
+## list
+
+Query prices
+
+| Flag | Type | Required |
+|---|---|---|
+| `--allow_expired_prices` | boolean |  |
+| `--end_time` | string |  |
+| `--entity_type` | string |  |
+| `--expand` | string |  |
+| `--limit` | integer |  |
+| `--offset` | integer |  |
+| `--order` | string |  |
+| `--parent_price_id` | string |  |
+| `--sort` | string |  |
+| `--start_date_lt` | string |  |
+| `--start_time` | string |  |
+| `--status` | string |  |
+| `--subscription_id` | string |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `billing_periods` (array)
+- `entity_ids` (array)
+- `filters` (array)
+- `meter_ids` (array)
+- `plan_ids` (array)
+- `price_ids` (array)
+</Note>
+
+```sh
+flexprice prices list
+```
+
+## lookup
+
+Get price by lookup key
+
+```sh
+flexprice prices lookup
+```
+
+## retrieve
+
+Get price
+
+```sh
+flexprice prices retrieve
+```
+
+## update
+
+Update price
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--amount` | string |  | Amount is the new price amount that overrides the original price (optional) |
+| `--billing_model` | string |  |  |
+| `--description` | string |  |  |
+| `--display_name` | string |  |  |
+| `--effective_from` | string |  |  |
+| `--group_id` | string |  | GroupID is the id of the group to update the price in. If not provided (nil), the group will not be changed If provided as empty string (""), the group will be removed (price will be ungrouped) If provided as a group ID, the price will be assigned to that group (must exist and be published) |
+| `--lookup_key` | string |  | All price fields that can be updated Non-critical fields (can be updated directly) |
+| `--price_unit_amount` | string |  | PriceUnitAmount is the price unit amount (for CUSTOM price unit type, FLAT_FEE/PACKAGE billing models) |
+| `--tier_mode` | string |  |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `metadata` (object)
+- `price_unit_tiers` (array)
+- `tiers` (array)
+- `transform_quantity` (object)
+</Note>
+
+```sh
+flexprice prices update
+```
+

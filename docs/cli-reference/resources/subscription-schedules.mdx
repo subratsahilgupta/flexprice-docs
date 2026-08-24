@@ -1,0 +1,43 @@
+---
+title: "Subscription Schedules"
+description: "Every subscription-schedules command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## cancel
+
+Cancel subscription schedule
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--schedule_id` | string |  | schedule_id is the ID of the schedule to cancel (optional if subscription_id and schedule_type are provided) |
+| `--schedule_type` | string |  |  |
+| `--subscription_id` | string |  | subscription_id is the ID of the subscription (required if schedule_id is not provided) |
+
+```sh
+flexprice subscription-schedules cancel
+```
+
+## list
+
+List all subscription schedules
+
+```sh
+flexprice subscription-schedules list
+```
+
+## list-for-subscription
+
+List subscription schedules
+
+```sh
+flexprice subscription-schedules list-for-subscription
+```
+
+## retrieve
+
+Get subscription schedule
+
+```sh
+flexprice subscription-schedules retrieve
+```
+

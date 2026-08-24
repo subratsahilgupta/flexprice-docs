@@ -1,0 +1,101 @@
+---
+title: "Coupons"
+description: "Every coupons command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## create
+
+Create coupon
+
+| Flag | Type | Required |
+|---|---|---|
+| `--amount_off` | string |  |
+| `--cadence` | string | yes |
+| `--coupon_code` | string |  |
+| `--currency` | string |  |
+| `--duration_in_periods` | integer |  |
+| `--max_redemptions` | integer |  |
+| `--name` | string | yes |
+| `--percentage_off` | string |  |
+| `--redeem_after` | string |  |
+| `--redeem_before` | string |  |
+| `--type` | string | yes |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `metadata` (object)
+- `rules` (object)
+</Note>
+
+```sh
+flexprice coupons create --cadence=<value> --name=<value> --type=<value>
+```
+
+## delete
+
+Delete coupon
+
+```sh
+flexprice coupons delete
+```
+
+## list
+
+Query coupons
+
+| Flag | Type | Required |
+|---|---|---|
+| `--expand` | string |  |
+| `--limit` | integer |  |
+| `--offset` | integer |  |
+| `--order` | string |  |
+| `--status` | string |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `coupon_codes` (array)
+- `coupon_ids` (array)
+- `filters` (array)
+- `sort` (array)
+</Note>
+
+```sh
+flexprice coupons list
+```
+
+## lookup
+
+Get coupon by code
+
+```sh
+flexprice coupons lookup
+```
+
+## retrieve
+
+Get coupon
+
+```sh
+flexprice coupons retrieve
+```
+
+## update
+
+Update coupon
+
+| Flag | Type | Required |
+|---|---|---|
+| `--name` | string |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice coupons update
+```
+

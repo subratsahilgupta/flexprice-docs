@@ -1,0 +1,47 @@
+---
+title: "Checkout"
+description: "Every checkout command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## create
+
+Create checkout session
+
+| Flag | Type | Required |
+|---|---|---|
+| `--action` | string | yes |
+| `--cancel_url` | string |  |
+| `--customer_external_id` | string | yes |
+| `--failure_url` | string |  |
+| `--idempotency_key` | string |  |
+| `--payment_provider` | string | yes |
+| `--success_url` | string |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `configuration` (object)
+- `metadata` (object)
+- `payment_provider_config` (object)
+</Note>
+
+```sh
+flexprice checkout create --action=<value> --customer_external_id=<value> --payment_provider=<value>
+```
+
+## delete
+
+Delete checkout session
+
+```sh
+flexprice checkout delete
+```
+
+## retrieve
+
+Get checkout session
+
+```sh
+flexprice checkout retrieve
+```
+
