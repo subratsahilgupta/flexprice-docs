@@ -1,0 +1,94 @@
+---
+title: "Credit Grants"
+description: "Every credit-grants command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## create
+
+Create credit grant
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--addon_id` | string |  |  |
+| `--cadence` | string | yes |  |
+| `--conversion_rate` | string |  | amount in the currency = number of credits * conversion_rate ex if conversion_rate is 1, then 1 USD = 1 credit ex if conversion_rate is 2, then 1 USD = 0.5 credits ex if conversion_rate is 0.5, then 1 USD = 2 credits |
+| `--credits` | string | yes |  |
+| `--end_date` | string |  |  |
+| `--expiration_duration` | integer |  |  |
+| `--expiration_duration_unit` | string |  |  |
+| `--expiration_type` | string |  |  |
+| `--name` | string | yes |  |
+| `--period` | string |  |  |
+| `--period_count` | integer |  |  |
+| `--plan_id` | string |  |  |
+| `--priority` | integer |  |  |
+| `--scope` | string | yes |  |
+| `--start_date` | string |  |  |
+| `--subscription_id` | string |  |  |
+| `--topup_conversion_rate` | string |  | topup_conversion_rate is the conversion rate for the topup to the currency ex if topup_conversion_rate is 1, then 1 USD = 1 credit ex if topup_conversion_rate is 2, then 1 USD = 0.5 credits ex if topup_conversion_rate is 0.5, then 1 USD = 2 credits |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice credit-grants create --cadence=<value> --credits=<value> --name=<value> --scope=<value>
+```
+
+## delete
+
+Delete credit grant
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--effective_date` | string |  | EffectiveDate is optional; when set (subscription scope) the grant end date is set to this time. |
+
+```sh
+flexprice credit-grants delete
+```
+
+## for-addon
+
+Get addon credit grants
+
+```sh
+flexprice credit-grants for-addon
+```
+
+## for-plan
+
+Get plan credit grants
+
+```sh
+flexprice credit-grants for-plan
+```
+
+## retrieve
+
+Get credit grant
+
+```sh
+flexprice credit-grants retrieve
+```
+
+## update
+
+Update credit grant
+
+| Flag | Type | Required |
+|---|---|---|
+| `--end_date` | string |  |
+| `--name` | string |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice credit-grants update
+```
+

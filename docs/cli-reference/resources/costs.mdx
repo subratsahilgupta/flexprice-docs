@@ -1,0 +1,145 @@
+---
+title: "Costs"
+description: "Every costs command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## active
+
+Get active costsheet
+
+```sh
+flexprice costs active
+```
+
+## analytics
+
+Get combined revenue and cost analytics
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--end_time` | string |  |  |
+| `--external_customer_id` | string |  | Optional - for specific customer |
+| `--include_children` | boolean |  | IncludeChildren, when true and ExternalCustomerID belongs to a parent customer, aggregates every inherited-child customer's usage into the revenue and cost totals. Default (false) restricts the query to the customer's own usage — mirrors the meter-usage analytics contract. |
+| `--limit` | integer |  | Pagination |
+| `--offset` | integer |  |  |
+| `--start_time` | string |  | Time range fields (optional - defaults to last 7 days if not provided) |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `expand` (array)
+- `feature_ids` (array)
+- `property_filters` (object)
+</Note>
+
+```sh
+flexprice costs analytics
+```
+
+## analytics-v2
+
+Get combined revenue and cost analytics (V2)
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--end_time` | string |  |  |
+| `--external_customer_id` | string |  | Optional - for specific customer |
+| `--include_children` | boolean |  | IncludeChildren, when true and ExternalCustomerID belongs to a parent customer, aggregates every inherited-child customer's usage into the revenue and cost totals. Default (false) restricts the query to the customer's own usage — mirrors the meter-usage analytics contract. |
+| `--limit` | integer |  | Pagination |
+| `--offset` | integer |  |  |
+| `--start_time` | string |  | Time range fields (optional - defaults to last 7 days if not provided) |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `expand` (array)
+- `feature_ids` (array)
+- `property_filters` (object)
+</Note>
+
+```sh
+flexprice costs analytics-v2
+```
+
+## create
+
+Create costsheet
+
+| Flag | Type | Required |
+|---|---|---|
+| `--description` | string |  |
+| `--lookup_key` | string |  |
+| `--name` | string | yes |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice costs create --name=<value>
+```
+
+## delete
+
+Delete costsheet
+
+```sh
+flexprice costs delete
+```
+
+## list
+
+Query costsheets
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--environmentID` | string |  | EnvironmentID filters by specific environment ID |
+| `--lookupKey` | string |  | LookupKey filters by lookup key |
+| `--name` | string |  | Name filters by costsheet name |
+| `--status` | string |  |  |
+| `--tenantID` | string |  | TenantID filters by specific tenant ID |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `costsheetIDs` (array)
+- `filters` (array)
+- `queryFilter` (object)
+- `sort` (array)
+- `timeRangeFilter` (object)
+</Note>
+
+```sh
+flexprice costs list
+```
+
+## retrieve
+
+Get costsheet
+
+```sh
+flexprice costs retrieve
+```
+
+## update
+
+Update costsheet
+
+| Flag | Type | Required |
+|---|---|---|
+| `--description` | string |  |
+| `--lookup_key` | string |  |
+| `--name` | string |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice costs update
+```
+

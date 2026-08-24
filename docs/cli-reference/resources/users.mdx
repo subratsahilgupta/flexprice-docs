@@ -1,0 +1,113 @@
+---
+title: "Users"
+description: "Every users command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## create
+
+Create user or service account
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--email` | string |  | Required when type is "user" |
+| `--name` | string |  | Display name; optional for service accounts |
+| `--type` | string | yes |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `roles` (array)
+</Note>
+
+```sh
+flexprice users create --type=<value>
+```
+
+## delete
+
+Delete service account
+
+```sh
+flexprice users delete
+```
+
+## list
+
+Query users
+
+| Flag | Type | Required |
+|---|---|---|
+| `--end_time` | string |  |
+| `--expand` | string |  |
+| `--limit` | integer |  |
+| `--offset` | integer |  |
+| `--order` | string |  |
+| `--start_time` | string |  |
+| `--status` | string |  |
+| `--type` | string |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `filters` (array)
+- `roles` (array)
+- `sort` (array)
+- `user_ids` (array)
+</Note>
+
+```sh
+flexprice users list
+```
+
+## me
+
+Get current user
+
+```sh
+flexprice users me
+```
+
+## update
+
+Update service account
+
+| Flag | Type | Required |
+|---|---|---|
+| `--name` | string | yes |
+
+```sh
+flexprice users update --name=<value>
+```
+
+## update-me
+
+Update current user
+
+| Flag | Type | Required |
+|---|---|---|
+| `--name` | string |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice users update-me
+```
+
+## update-user-roles
+
+Update user roles
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `roles` (array)
+</Note>
+
+```sh
+flexprice users update-user-roles
+```
+

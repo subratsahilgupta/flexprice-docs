@@ -1,0 +1,49 @@
+---
+title: "Tasks"
+description: "Every tasks command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## download
+
+Download task export file
+
+```sh
+flexprice tasks download
+```
+
+## list
+
+List tasks
+
+```sh
+flexprice tasks list
+```
+
+## result
+
+Get task processing result
+
+```sh
+flexprice tasks result
+```
+
+## retrieve
+
+Get a task
+
+```sh
+flexprice tasks retrieve
+```
+
+## update-status
+
+Update task status
+
+| Flag | Type | Required |
+|---|---|---|
+| `--task_status` | string | yes |
+
+```sh
+flexprice tasks update-status --task_status=<value>
+```
+

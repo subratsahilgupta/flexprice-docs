@@ -1,0 +1,193 @@
+---
+title: "Wallets"
+description: "Every wallets command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## balance
+
+Get wallet balance
+
+```sh
+flexprice wallets balance
+```
+
+## by-customer
+
+Get wallets by customer ID
+
+```sh
+flexprice wallets by-customer
+```
+
+## create
+
+Create a new wallet
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--conversion_rate` | string |  | amount in the currency = number of credits * conversion_rate ex if conversion_rate is 1, then 1 USD = 1 credit ex if conversion_rate is 2, then 1 USD = 0.5 credits ex if conversion_rate is 0.5, then 1 USD = 2 credits |
+| `--currency` | string | yes |  |
+| `--customer_id` | string |  |  |
+| `--description` | string |  |  |
+| `--external_customer_id` | string |  | external_customer_id is the customer id in the external system |
+| `--initial_credits_expiry_date_utc` | string |  | initial_credits_expiry_date_utc is the expiry date in UTC timezone (optional to set nil means no expiry) ex 2025-01-01 00:00:00 UTC |
+| `--initial_credits_to_load` | string |  | initial_credits_to_load is the number of credits to load to the wallet if not provided, the wallet will be created with 0 balance NOTE: this is not the amount in the currency, but the number of credits |
+| `--initial_credits_to_load_expiry_date` | integer |  | initial_credits_to_load_expiry_date YYYYMMDD format in UTC timezone (optional to set nil means no expiry) for ex 20250101 means the credits will expire on 2025-01-01 00:00:00 UTC hence they will be available for use until 2024-12-31 23:59:59 UTC |
+| `--price_unit` | string |  | price_unit is the code of the price unit to use for wallet creation If provided, the price unit will be used to set the currency and conversion rate of the wallet: - currency: set to price unit's base_currency - conversion_rate: set to price unit's conversion_rate |
+| `--topup_conversion_rate` | string |  | topup_conversion_rate is the conversion rate for the topup to the currency ex if topup_conversion_rate is 1, then 1 USD = 1 credit ex if topup_conversion_rate is 2, then 1 USD = 0.5 credits ex if topup_conversion_rate is 0.5, then 1 USD = 2 credits |
+| `--wallet_type` | string |  |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `alert_settings` (object)
+- `auto_topup` (object)
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice wallets create --currency=<value>
+```
+
+## list
+
+Query wallets
+
+| Flag | Type | Required |
+|---|---|---|
+| `--alert_enabled` | boolean |  |
+| `--expand` | string |  |
+| `--limit` | integer |  |
+| `--offset` | integer |  |
+| `--order` | string |  |
+| `--sort` | string |  |
+| `--status` | string |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `wallet_ids` (array)
+</Note>
+
+```sh
+flexprice wallets list
+```
+
+## list-for-customer
+
+Get Customer Wallets
+
+```sh
+flexprice wallets list-for-customer
+```
+
+## retrieve
+
+Get wallet
+
+```sh
+flexprice wallets retrieve
+```
+
+## search-transactions
+
+Query wallet transactions
+
+| Flag | Type | Required |
+|---|---|---|
+| `--created_by` | string |  |
+| `--credits_available_gt` | number |  |
+| `--end_time` | string |  |
+| `--expand` | string |  |
+| `--expiry_date_after` | string |  |
+| `--expiry_date_before` | string |  |
+| `--id` | string |  |
+| `--limit` | integer |  |
+| `--offset` | integer |  |
+| `--order` | string |  |
+| `--priority` | integer |  |
+| `--reference_id` | string |  |
+| `--reference_type` | string |  |
+| `--start_time` | string |  |
+| `--status` | string |  |
+| `--transaction_reason` | string |  |
+| `--transaction_status` | string |  |
+| `--type` | string |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `filters` (array)
+- `sort` (array)
+</Note>
+
+```sh
+flexprice wallets search-transactions
+```
+
+## terminate
+
+Terminate a wallet
+
+```sh
+flexprice wallets terminate
+```
+
+## top-up
+
+Top up wallet
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--amount` | string |  | amount is the amount in the currency of the wallet to be added NOTE: this is not the number of credits to add, but the amount in the currency amount = credits_to_add * conversion_rate if both amount and credits_to_add are provided, amount will be ignored ex if the wallet has a conversion_rate of 2 then adding an amount of 10 USD in the wallet wil add 5 credits in the wallet |
+| `--bonus_credits_expiry_date_utc` | string |  | bonus_credits_expiry_date_utc is the expiry (UTC, full precision) applied to the bonus credits transaction. Independent of expiry_date_utc, which governs the purchase credits. Only honored when bonus credits are actually granted (explicit BonusCreditsToAdd or slab). |
+| `--bonus_credits_to_add` | string |  | bonus_credits_to_add is an explicit override for the bonus credits granted alongside this purchase. When nil/omitted, the bonus is resolved from the tenant's bonus_credits_topup_config slabs (if enabled). When set, it must be greater than 0 and is used as-is, skipping slab resolution. To grant no bonus, omit this field entirely. |
+| `--credits_to_add` | string |  | credits_to_add is the number of credits to add to the wallet |
+| `--description` | string |  | description to add any specific details about the transaction |
+| `--expiry_date_utc` | string |  | expiry_date_utc is the expiry date in UTC timezone ex 2025-01-01 00:00:00 UTC |
+| `--force_sync_invoice` | boolean |  |  |
+| `--idempotency_key` | string |  | idempotency_key is a unique key for the transaction |
+| `--priority` | integer |  | priority is the priority of the transaction lower number means higher priority default is nil which means no priority at all |
+| `--transaction_reason` | string | yes |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `checkout` (object)
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice wallets top-up --transaction_reason=<value>
+```
+
+## transactions
+
+Get wallet transactions
+
+```sh
+flexprice wallets transactions
+```
+
+## update
+
+Update a wallet
+
+| Flag | Type | Required |
+|---|---|---|
+| `--description` | string |  |
+| `--name` | string |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `alert_settings` (object)
+- `auto_topup` (object)
+- `config` (object)
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice wallets update
+```
+

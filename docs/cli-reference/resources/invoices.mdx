@@ -1,0 +1,205 @@
+---
+title: "Invoices"
+description: "Every invoices command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## create
+
+Create one-off invoice
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--amount_due` | string | yes | amount_due is the total amount that needs to be paid for this invoice |
+| `--amount_paid` | string |  | amount_paid is the amount that has been paid towards this invoice |
+| `--billing_period` | string |  | billing_period is the period this invoice covers (e.g., "monthly", "yearly") |
+| `--billing_reason` | string |  |  |
+| `--currency` | string | yes | currency is the three-letter ISO currency code (e.g., USD, EUR) for the invoice |
+| `--customer_id` | string | yes | customer_id is the unique identifier of the customer this invoice belongs to |
+| `--description` | string |  | description is an optional text description of the invoice |
+| `--due_date` | string |  | due_date is the date by which payment is expected |
+| `--force_sync_invoice` | boolean |  | force_sync_invoice, when true, attempts to synchronously sync this invoice to Moyasar (if enabled) before returning, instead of relying solely on the async Kafka + Temporal vendor-sync pipeline. Only honored by CreateOneOffInvoice. Best-effort: sync failures do not fail invoice creation. |
+| `--idempotency_key` | string |  | idempotency_key is an optional key used to prevent duplicate invoice creation |
+| `--invoice_number` | string |  | invoice_number is an optional human-readable identifier for the invoice |
+| `--invoice_pdf_url` | string |  | invoice_pdf_url is the URL where customers can download the PDF version of this invoice |
+| `--invoice_status` | string |  |  |
+| `--invoice_type` | string |  |  |
+| `--issue_date` | string |  | issue_date overrides the user-facing date of the invoice. Defaults to created_at if not provided. |
+| `--payment_status` | string |  |  |
+| `--period_end` | string |  | period_end is the end date of the billing period |
+| `--period_start` | string |  | period_start is the start date of the billing period |
+| `--subscription_id` | string |  | subscription_id is the optional unique identifier of the subscription associated with this invoice |
+| `--subtotal` | string | yes | subtotal is the amount before taxes and discounts are applied |
+| `--total` | string | yes | total is the total amount of the invoice including taxes and discounts |
+| `--total_prepaid_applied` | string |  | total_prepaid_applied is the total amount of prepaid applied to this invoice. |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `coupons` (array)
+- `invoice_coupons` (array)
+- `line_item_coupons` (array)
+- `line_items` (array)
+- `metadata` (object)
+- `prepared_tax_rates` (array)
+- `tax_rate_overrides` (array)
+- `tax_rates` (array)
+</Note>
+
+```sh
+flexprice invoices create --amount_due=<value> --currency=<value> --customer_id=<value> --subtotal=<value> --total=<value>
+```
+
+## customer-summary
+
+Get customer invoice summary
+
+```sh
+flexprice invoices customer-summary
+```
+
+## finalize
+
+Finalize invoice
+
+```sh
+flexprice invoices finalize
+```
+
+## list
+
+Query invoices
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--amount_due_gt` | number |  | amount_due_gt filters invoices with a total amount due greater than the specified value Useful for finding invoices above a certain threshold or identifying high-value invoices |
+| `--amount_remaining_gt` | number |  | amount_remaining_gt filters invoices with an outstanding balance greater than the specified value Useful for finding invoices that still have significant unpaid amounts |
+| `--billing_reason` | string |  |  |
+| `--currency` | string |  | currency filters invoices by their currency (ISO 4217 code, e.g. "usd", "eur"). Matches on the invoices.currency column exactly. |
+| `--customer_id` | string |  | customer_id filters invoices for a specific customer using FlexPrice's internal customer ID This is the ID returned by FlexPrice when creating or retrieving customers |
+| `--end_time` | string |  |  |
+| `--expand` | string |  |  |
+| `--external_customer_id` | string |  | external_customer_id filters invoices for a customer using your system's customer identifier This is the ID you provided when creating the customer in FlexPrice |
+| `--invoice_type` | string |  |  |
+| `--limit` | integer |  |  |
+| `--offset` | integer |  |  |
+| `--order` | string |  |  |
+| `--period_end_gte` | string |  | period_end_gte filters invoices with period_end >= value |
+| `--period_end_lte` | string |  | period_end_lte filters invoices with period_end <= value |
+| `--period_start_gte` | string |  | period_start_gte filters invoices with period_start >= value |
+| `--period_start_lte` | string |  | period_start_lte filters invoices with period_start <= value |
+| `--skip_line_items` | boolean |  | SkipLineItems if true, will not include line items in the response |
+| `--start_time` | string |  |  |
+| `--status` | string |  |  |
+| `--subscription_id` | string |  | subscription_id filters invoices generated for a specific subscription Only returns invoices that were created as part of the specified subscription's billing |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `filters` (array)
+- `invoice_ids` (array)
+- `invoice_status` (array)
+- `payment_status` (array)
+- `sort` (array)
+- `subscription_customer_id` (array)
+</Note>
+
+```sh
+flexprice invoices list
+```
+
+## payment-attempt
+
+Attempt invoice payment
+
+```sh
+flexprice invoices payment-attempt
+```
+
+## payment-status
+
+Update invoice payment status
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--amount` | string |  | amount is the optional payment amount to record |
+| `--payment_status` | string | yes |  |
+
+```sh
+flexprice invoices payment-status --payment_status=<value>
+```
+
+## pdf
+
+Get invoice PDF
+
+```sh
+flexprice invoices pdf
+```
+
+## preview
+
+Get invoice preview
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--hide_zero_charges_line_items` | boolean |  | hide_zero_charges_line_items indicates whether to hide line items with zero cost |
+| `--period_end` | string |  | period_end is the optional end date of the period to preview |
+| `--period_start` | string |  | period_start is the optional start date of the period to preview |
+| `--subscription_id` | string | yes | subscription_id is the unique identifier of the subscription to preview invoice for |
+
+```sh
+flexprice invoices preview --subscription_id=<value>
+```
+
+## recalculate
+
+Recalculate draft invoice (v2)
+
+```sh
+flexprice invoices recalculate
+```
+
+## retrieve
+
+Get invoice
+
+```sh
+flexprice invoices retrieve
+```
+
+## trigger-comms-webhook
+
+Trigger invoice communication webhook
+
+```sh
+flexprice invoices trigger-comms-webhook
+```
+
+## update
+
+Update invoice
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--apply_discount` | boolean |  | When true, recalculates discount from existing coupon associations (draft invoices only). |
+| `--due_date` | string |  |  |
+| `--invoice_pdf_url` | string |  | invoice_pdf_url is the URL where customers can download the PDF version of this invoice |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice invoices update
+```
+
+## void
+
+Void invoice
+
+```sh
+flexprice invoices void
+```
+

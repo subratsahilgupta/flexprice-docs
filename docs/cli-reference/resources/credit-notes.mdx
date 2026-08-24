@@ -1,0 +1,53 @@
+---
+title: "Credit Notes"
+description: "Every credit-notes command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## create
+
+Create credit note
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--credit_note_number` | string |  | credit_note_number is an optional human-readable identifier for the credit note |
+| `--idempotency_key` | string |  | idempotency_key is an optional key used to prevent duplicate credit note creation |
+| `--invoice_id` | string | yes | invoice_id is the unique identifier of the invoice this credit note is applied to |
+| `--memo` | string |  | memo is an optional free-text field for additional notes about the credit note |
+| `--process_credit_note` | boolean |  | process_credit_note is a flag to process the credit note after creation |
+| `--reason` | string | yes |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `line_items` (array)
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice credit-notes create --invoice_id=<value> --reason=<value>
+```
+
+## finalize
+
+Finalize credit note
+
+```sh
+flexprice credit-notes finalize
+```
+
+## retrieve
+
+Get credit note
+
+```sh
+flexprice credit-notes retrieve
+```
+
+## void
+
+Void credit note
+
+```sh
+flexprice credit-notes void
+```
+

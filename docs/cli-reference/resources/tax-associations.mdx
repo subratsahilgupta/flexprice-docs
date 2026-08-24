@@ -1,0 +1,74 @@
+---
+title: "Tax Associations"
+description: "Every tax-associations command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## create
+
+Create Tax Association
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--auto_apply` | boolean |  |  |
+| `--currency` | string |  |  |
+| `--end_date` | string |  | EndDate sets when this association expires. Must be after StartDate when both are provided. |
+| `--entity_id` | string |  |  |
+| `--entity_type` | string |  |  |
+| `--external_customer_id` | string |  |  |
+| `--priority` | integer |  |  |
+| `--start_date` | string |  | StartDate sets when this association becomes active. Defaults to now if omitted. |
+| `--tax_rate_code` | string | yes |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice tax-associations create --tax_rate_code=<value>
+```
+
+## delete
+
+Delete tax association
+
+```sh
+flexprice tax-associations delete
+```
+
+## list
+
+List tax associations
+
+```sh
+flexprice tax-associations list
+```
+
+## retrieve
+
+Get Tax Association
+
+```sh
+flexprice tax-associations retrieve
+```
+
+## update
+
+Update tax association
+
+| Flag | Type | Required |
+|---|---|---|
+| `--auto_apply` | boolean |  |
+| `--priority` | integer |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice tax-associations update
+```
+

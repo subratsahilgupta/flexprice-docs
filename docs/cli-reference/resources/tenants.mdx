@@ -1,0 +1,40 @@
+---
+title: "Tenants"
+description: "Every tenants command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## billing-usage
+
+Get billing usage for the current tenant
+
+```sh
+flexprice tenants billing-usage
+```
+
+## retrieve
+
+Get tenant by ID
+
+```sh
+flexprice tenants retrieve
+```
+
+## update
+
+Update a tenant
+
+| Flag | Type | Required |
+|---|---|---|
+| `--name` | string |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `billing_details` (object)
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice tenants update
+```
+

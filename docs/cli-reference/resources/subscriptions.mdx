@@ -1,0 +1,376 @@
+---
+title: "Subscriptions"
+description: "Every subscriptions command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## activate
+
+Activate draft subscription
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--start_date` | string | yes | start_date is the new start date for the subscription when activating |
+
+```sh
+flexprice subscriptions activate --start_date=<value>
+```
+
+## add-addon
+
+Add addon to subscription
+
+| Flag | Type | Required |
+|---|---|---|
+| `--addon_id` | string | yes |
+| `--cadence` | string |  |
+| `--proration_behavior` | string |  |
+| `--start_date` | string |  |
+| `--subscription_id` | string | yes |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `checkout` (object)
+- `line_item_commitments` (object)
+- `metadata` (object)
+- `override_line_items` (array)
+</Note>
+
+```sh
+flexprice subscriptions add-addon --addon_id=<value> --subscription_id=<value>
+```
+
+## addon-associations
+
+Get active addon associations
+
+```sh
+flexprice subscriptions addon-associations
+```
+
+## cancel
+
+Cancel subscription
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--cancel_at` | string |  | CancelAt is the exact date/time when the subscription should be cancelled. Required for cancellation_type "scheduled_date"; optional for "immediate" (past dates only — backdated cancellation). For "scheduled_date", accepts both future dates (deferred cancellation) and past dates (backdated cancellation). For "immediate", accepts past/current dates only; use "scheduled_date" for future dates. |
+| `--cancel_immediately_inovice_policy` | string |  |  |
+| `--cancellation_type` | string | yes |  |
+| `--proration_behavior` | string |  |  |
+| `--reason` | string |  | Reason for cancellation (for audit and business intelligence) |
+
+```sh
+flexprice subscriptions cancel --cancellation_type=<value>
+```
+
+## change-execute
+
+Execute subscription plan change
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--billing_cadence` | string | yes |  |
+| `--billing_cycle` | string | yes |  |
+| `--billing_period` | string | yes |  |
+| `--billing_period_count` | integer |  | billing_period_count is the billing period count for the new subscription |
+| `--change_at` | string |  |  |
+| `--proration_behavior` | string | yes |  |
+| `--target_plan_id` | string | yes | target_plan_id is the ID of the new plan to change to (required) |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice subscriptions change-execute --billing_cadence=<value> --billing_cycle=<value> --billing_period=<value> --proration_behavior=<value> --target_plan_id=<value>
+```
+
+## change-preview
+
+Preview subscription plan change
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--billing_cadence` | string | yes |  |
+| `--billing_cycle` | string | yes |  |
+| `--billing_period` | string | yes |  |
+| `--billing_period_count` | integer |  | billing_period_count is the billing period count for the new subscription |
+| `--change_at` | string |  |  |
+| `--proration_behavior` | string | yes |  |
+| `--target_plan_id` | string | yes | target_plan_id is the ID of the new plan to change to (required) |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice subscriptions change-preview --billing_cadence=<value> --billing_cycle=<value> --billing_period=<value> --proration_behavior=<value> --target_plan_id=<value>
+```
+
+## create
+
+Create subscription
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--auto_invoice_threshold` | string |  | AutoInvoiceThreshold triggers a mid-period invoice when usage (in subscription currency) exceeds this amount. Standalone subscriptions only; all plan prices must be usage-based. Immutable after creation. |
+| `--billing_anchor` | string |  | BillingAnchor overrides the derived anchor for anniversary billing. For monthly billing, the day-of-month defines cycle boundaries (shorter first period if start is before that day). |
+| `--billing_cycle` | string |  |  |
+| `--billing_period` | string | yes |  |
+| `--billing_period_count` | integer |  |  |
+| `--collection_method` | string |  |  |
+| `--commitment_amount` | string |  |  |
+| `--commitment_duration` | string |  |  |
+| `--currency` | string | yes |  |
+| `--customer_id` | string |  | CustomerID takes priority over ExternalCustomerID when both are provided. |
+| `--enable_true_up` | boolean |  |  |
+| `--end_date` | string |  |  |
+| `--external_customer_id` | string |  |  |
+| `--gateway_payment_method_id` | string |  |  |
+| `--lookup_key` | string |  |  |
+| `--overage_factor` | string |  |  |
+| `--payment_behavior` | string |  |  |
+| `--payment_terms` | string |  |  |
+| `--plan_id` | string | yes |  |
+| `--proration_behavior` | string |  |  |
+| `--start_date` | string |  |  |
+| `--subscription_status` | string |  |  |
+| `--timezone` | string |  |  |
+| `--trial_period_days` | integer |  | TrialPeriodDays: nil = inherit from plan prices, 0 = no trial, >0 = override in days. |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `addons` (array)
+- `checkout` (object)
+- `coupons` (array)
+- `credit_grants` (array)
+- `inheritance` (object)
+- `line_item_commitments` (object)
+- `line_item_coupons` (object)
+- `line_items` (array)
+- `metadata` (object)
+- `override_entitlements` (array)
+- `override_line_items` (array)
+- `phases` (array)
+- `subscription_coupons` (array)
+- `tax_rate_overrides` (array)
+</Note>
+
+```sh
+flexprice subscriptions create --billing_period=<value> --currency=<value> --plan_id=<value>
+```
+
+## entitlements
+
+Get subscription entitlements
+
+```sh
+flexprice subscriptions entitlements
+```
+
+## execute-subscription-plan-change-v2
+
+Execute a plan change (v2, swap in place)
+
+| Flag | Type | Required |
+|---|---|---|
+| `--idempotency_key` | string |  |
+| `--proration_behavior` | string | yes |
+| `--target_plan_id` | string | yes |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `entity_policies` (object)
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice subscriptions execute-subscription-plan-change-v2 --proration_behavior=<value> --target_plan_id=<value>
+```
+
+## list
+
+Query subscriptions
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--active_at` | string |  | ActiveAt filters subscriptions that are active at the given time |
+| `--customer_id` | string |  | CustomerID filters by customer ID |
+| `--effective_date_for_update` | string |  | EffectiveDateForUpdate selects subscriptions that need a billing-period pass on or before this time: current_period_end <= date OR (cancel_at IS NOT NULL AND cancel_at <= date). When nil, period/cancel cutoff logic is not applied by this field (see TimeRangeFilter for legacy period-end filtering). |
+| `--end_time` | string |  |  |
+| `--expand` | string |  |  |
+| `--external_customer_id` | string |  | ExternalCustomerID filters by external customer ID |
+| `--limit` | integer |  |  |
+| `--offset` | integer |  |  |
+| `--order` | string |  |  |
+| `--plan_id` | string |  | PlanID filters by plan ID |
+| `--start_time` | string |  |  |
+| `--status` | string |  |  |
+| `--trial_end_due_lte` | string |  | TrialEndDueLTE, when set, restricts to subscriptions with trial_end not nil and trial_end <= trial_end_due_lte. Use with subscription_status trialing for trial-end cron processing. |
+| `--with_coupon_associations` | boolean |  | WithCouponAssociations eager-loads coupon associations and their coupons. Kept separate from WithLineItems because the coupon_associations table has no index leading with subscription_id, so Ent's edge load degrades to a full table scan. Only set it when the response actually surfaces the associations; the service layer back-fills it from expand="coupon_associations". |
+| `--with_line_items` | boolean |  | WithLineItems includes line items in the response. Deprecated: use expand="subscription_line_items" instead. Retained for backwards compatibility and for internal callers that need to force-disable line item loading (set to false). The service layer ORs this with the expand check before invoking the repository. |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `billing_cadence` (array)
+- `billing_period` (array)
+- `customer_ids` (array)
+- `filters` (array)
+- `invoicing_customer_ids` (array)
+- `parent_subscription_ids` (array)
+- `sort` (array)
+- `subscription_ids` (array)
+- `subscription_status` (array)
+- `subscription_type` (array)
+</Note>
+
+```sh
+flexprice subscriptions list
+```
+
+## modify-execute
+
+Execute subscription modification
+
+| Flag | Type | Required |
+|---|---|---|
+| `--type` | string | yes |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `checkout` (object)
+- `coupon_params` (object)
+- `grouped_invoicing_params` (object)
+- `inheritance_params` (object)
+- `quantity_change_params` (object)
+- `tax_params` (object)
+- `trial_end_params` (object)
+</Note>
+
+```sh
+flexprice subscriptions modify-execute --type=<value>
+```
+
+## modify-preview
+
+Preview subscription modification
+
+| Flag | Type | Required |
+|---|---|---|
+| `--type` | string | yes |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `checkout` (object)
+- `coupon_params` (object)
+- `grouped_invoicing_params` (object)
+- `inheritance_params` (object)
+- `quantity_change_params` (object)
+- `tax_params` (object)
+- `trial_end_params` (object)
+</Note>
+
+```sh
+flexprice subscriptions modify-preview --type=<value>
+```
+
+## preview-subscription-plan-change-v2
+
+Preview a plan change (v2, swap in place)
+
+| Flag | Type | Required |
+|---|---|---|
+| `--idempotency_key` | string |  |
+| `--proration_behavior` | string | yes |
+| `--target_plan_id` | string | yes |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `entity_policies` (object)
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice subscriptions preview-subscription-plan-change-v2 --proration_behavior=<value> --target_plan_id=<value>
+```
+
+## remove-addon
+
+Remove addon from subscription
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--addon_association_id` | string | yes |  |
+| `--effective_date` | string |  | EffectiveDate defaults to period end when nil; mid-period with create_prorations issues a wallet credit. |
+| `--proration_behavior` | string |  |  |
+| `--reason` | string |  |  |
+
+```sh
+flexprice subscriptions remove-addon --addon_association_id=<value>
+```
+
+## retrieve
+
+Get subscription
+
+```sh
+flexprice subscriptions retrieve
+```
+
+## retrieve-v2
+
+Get subscription (V2)
+
+```sh
+flexprice subscriptions retrieve-v2
+```
+
+## upcoming-grants
+
+Get upcoming credit grant applications
+
+```sh
+flexprice subscriptions upcoming-grants
+```
+
+## update
+
+Update subscription
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--cancel_at` | string |  |  |
+| `--cancel_at_period_end` | boolean |  |  |
+| `--parent_subscription_id` | string |  | ParentSubscriptionID sets or clears the parent subscription. Omit to leave unchanged; send "" to clear. |
+| `--status` | string |  |  |
+
+```sh
+flexprice subscriptions update
+```
+
+## usage
+
+Get usage by subscription
+
+| Flag | Type | Required |
+|---|---|---|
+| `--end_time` | string |  |
+| `--lifetime_usage` | boolean |  |
+| `--start_time` | string |  |
+| `--subscription_id` | string | yes |
+
+```sh
+flexprice subscriptions usage --subscription_id=<value>
+```
+

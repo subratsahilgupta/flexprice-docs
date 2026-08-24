@@ -1,0 +1,116 @@
+---
+title: "Features"
+description: "Every features command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## clone
+
+Clone a feature
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--description` | string |  | Description overrides the source feature's description when provided |
+| `--lookup_key` | string |  | LookupKey is required and must be unique across published features |
+| `--name` | string |  | Name is required and must be different from the source feature's name |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice features clone
+```
+
+## create
+
+Create feature
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--description` | string |  |  |
+| `--group_id` | string |  | GroupID is the id of the group to add the feature to |
+| `--lookup_key` | string |  |  |
+| `--meter_id` | string |  |  |
+| `--name` | string | yes |  |
+| `--type` | string | yes |  |
+| `--unit_plural` | string |  |  |
+| `--unit_singular` | string |  |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `alert_settings` (object)
+- `metadata` (object)
+- `meter` (object)
+- `reporting_unit` (object)
+</Note>
+
+```sh
+flexprice features create --name=<value> --type=<value>
+```
+
+## delete
+
+Delete feature
+
+```sh
+flexprice features delete
+```
+
+## list
+
+Query features
+
+| Flag | Type | Required |
+|---|---|---|
+| `--end_time` | string |  |
+| `--expand` | string |  |
+| `--limit` | integer |  |
+| `--lookup_key` | string |  |
+| `--name_contains` | string |  |
+| `--offset` | integer |  |
+| `--order` | string |  |
+| `--start_time` | string |  |
+| `--status` | string |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `feature_ids` (array)
+- `filters` (array)
+- `lookup_keys` (array)
+- `meter_ids` (array)
+- `sort` (array)
+</Note>
+
+```sh
+flexprice features list
+```
+
+## update
+
+Update feature
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--description` | string |  |  |
+| `--group_id` | string |  | GroupID is the id of the group to assign the feature to. Pass empty string to clear. |
+| `--name` | string |  |  |
+| `--unit_plural` | string |  |  |
+| `--unit_singular` | string |  |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `alert_settings` (object)
+- `filters` (array)
+- `metadata` (object)
+- `reporting_unit` (object)
+</Note>
+
+```sh
+flexprice features update
+```
+

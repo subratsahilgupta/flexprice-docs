@@ -1,0 +1,91 @@
+---
+title: "Scheduled Tasks"
+description: "Every scheduled-tasks command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## create
+
+Create scheduled task
+
+| Flag | Type | Required |
+|---|---|---|
+| `--connection_id` | string | yes |
+| `--enabled` | boolean |  |
+| `--entity_type` | string | yes |
+| `--interval` | string | yes |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `job_config` (object)
+</Note>
+
+```sh
+flexprice scheduled-tasks create --connection_id=<value> --entity_type=<value> --interval=<value>
+```
+
+## delete
+
+Delete a scheduled task
+
+```sh
+flexprice scheduled-tasks delete
+```
+
+## list
+
+List scheduled tasks
+
+```sh
+flexprice scheduled-tasks list
+```
+
+## retrieve
+
+Get scheduled task
+
+```sh
+flexprice scheduled-tasks retrieve
+```
+
+## run
+
+Trigger force run
+
+| Flag | Type | Required |
+|---|---|---|
+| `--end_time` | string |  |
+| `--start_time` | string |  |
+
+```sh
+flexprice scheduled-tasks run
+```
+
+## schedule-billing-period-update
+
+Schedule update billing period
+
+```sh
+flexprice scheduled-tasks schedule-billing-period-update
+```
+
+## schedule-draft-finalization
+
+Schedule draft finalization
+
+```sh
+flexprice scheduled-tasks schedule-draft-finalization
+```
+
+## update
+
+Update a scheduled task
+
+| Flag | Type | Required |
+|---|---|---|
+| `--enabled` | boolean | yes |
+
+```sh
+flexprice scheduled-tasks update --enabled=<value>
+```
+

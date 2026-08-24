@@ -1,0 +1,64 @@
+---
+title: "Groups"
+description: "Every groups command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## create
+
+Create group
+
+| Flag | Type | Required |
+|---|---|---|
+| `--entity_type` | string | yes |
+| `--lookup_key` | string | yes |
+| `--name` | string | yes |
+
+```sh
+flexprice groups create --entity_type=<value> --lookup_key=<value> --name=<value>
+```
+
+## delete
+
+Delete group
+
+```sh
+flexprice groups delete
+```
+
+## list
+
+Query groups
+
+| Flag | Type | Required |
+|---|---|---|
+| `--end_time` | string |  |
+| `--entity_type` | string |  |
+| `--expand` | string |  |
+| `--limit` | integer |  |
+| `--lookup_key` | string |  |
+| `--name` | string |  |
+| `--offset` | integer |  |
+| `--order` | string |  |
+| `--start_time` | string |  |
+| `--status` | string |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `filters` (array)
+- `group_ids` (array)
+- `sort` (array)
+</Note>
+
+```sh
+flexprice groups list
+```
+
+## retrieve
+
+Get group
+
+```sh
+flexprice groups retrieve
+```
+
