@@ -1,0 +1,111 @@
+---
+title: "Output & scripting"
+description: "The machine-facing contract: stdout/stderr separation, stable exit codes, and non-interactive behaviour"
+---
+
+The CLI is designed to be scripted against. Three guarantees make that safe: data and commentary never mix, exit codes are stable, and nothing destructive happens without either a confirmation or an explicit `--force`.
+
+## Data goes to stdout, everything else to stderr
+
+Results go to **stdout**. Spinners, footers, receipts, warnings, and empty-state hints go to **stderr**. Redirecting stdout therefore gives you clean data with no commentary in it.
+
+```sh
+flexprice customers list --output json > customers.json
+```
+
+That file contains only JSON. The progress spinner and the `profile: … · region: …` footer went to your terminal, not into the file.
+
+<Note>
+  This is why the CLI can print a friendly footer on every table without breaking a single pipeline. If you have ever had to `grep -v` a tool's own status output back out of your data, this is the problem being avoided.
+</Note>
+
+Piping works as you would expect:
+
+```sh
+flexprice customers list --output json | jq -r '.items[].email'
+```
+
+## Exit codes
+
+Stable and safe to branch on:
+
+| Code | Meaning |
+| --- | --- |
+| `0` | Success |
+| `1` | Generic failure |
+| `2` | Usage error |
+| `3` | Authentication failure |
+| `4` | Not found |
+| `5` | Rate limited |
+| `130` | Interrupted (Ctrl-C) |
+
+```sh
+if ! flexprice customers retrieve "$ID" --output json > customer.json; then
+  case $? in
+    3) echo "check FLEXPRICE_API_KEY" ;;
+    4) echo "no such customer: $ID" ;;
+    5) echo "rate limited, backing off" ;;
+  esac
+fi
+```
+
+## Running non-interactively
+
+The CLI notices whether a human is watching and adapts, without being told:
+
+<CardGroup cols={3}>
+  <Card icon="spinner" title="Progress">
+    Animation is suppressed when stderr is not a terminal, under `TERM=dumb`, and under `--quiet`.
+  </Card>
+  <Card icon="palette" title="Colour">
+    Disabled when `NO_COLOR` is set, under `TERM=dumb`, and with `--no-color`.
+  </Card>
+  <Card icon="keyboard" title="Prompts">
+    `--no-input` makes any prompt a hard failure that names the flag to pass instead.
+  </Card>
+</CardGroup>
+
+In practice CI logs stay clean without passing any flags at all.
+
+## Destructive commands
+
+`delete`, `void`, `cancel`, `terminate`, `archive`, and `finalize` confirm before acting. In a script, pass `--force`:
+
+```sh
+flexprice customers delete cust_123 --force
+```
+
+<Warning>
+  Without `--force`, a non-interactive run **fails rather than proceeding**. The CLI will not destroy something on the grounds that nobody was available to be asked.
+</Warning>
+
+Note that `--force` is a per-command flag, so it goes after the resource and action — see [Global flags](/docs/cli/global-flags).
+
+## A worked CI example
+
+```sh
+#!/usr/bin/env bash
+set -euo pipefail
+
+export FLEXPRICE_API_KEY="$CI_FLEXPRICE_KEY"
+
+flexprice --region us --no-input --quiet \
+  customers create --external_id="$TENANT" --email="$EMAIL" \
+  --output json > created.json
+
+CUSTOMER_ID=$(jq -r '.id' created.json)
+echo "created $CUSTOMER_ID"
+```
+
+`--no-input` guarantees the job can never hang on a prompt, `--quiet` keeps the log readable, `set -e` plus stable exit codes means a failure stops the build, and the key comes from the environment so it never appears in the process list.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card icon="flag" title="Global flags" href="/docs/cli/global-flags">
+    Every flag, grouped by what it controls.
+  </Card>
+  <Card icon="key" title="Authentication" href="/docs/cli/authentication">
+    Credential precedence and CI setup.
+  </Card>
+</CardGroup>
