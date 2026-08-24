@@ -35,6 +35,17 @@
             ]
           },
           {
+            "group": "CLI",
+            "icon": "terminal",
+            "pages": [
+              "docs/cli/overview",
+              "docs/cli/quickstart",
+              "docs/cli/authentication",
+              "docs/cli/global-flags",
+              "docs/cli/output-and-scripting"
+            ]
+          },
+          {
             "group": "Connect",
             "icon": "plug",
             "pages": [

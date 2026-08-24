@@ -1,0 +1,88 @@
+---
+title: "Overview"
+description: "Drive usage-based billing from your terminal: send events, inspect metering, and reach every Flexprice API endpoint"
+---
+
+The **Flexprice CLI** puts your billing account behind a command prompt. Send usage events and see how they metered, create and inspect customers, subscriptions and invoices, and reach any API endpoint — without leaving the terminal or writing a script against the REST API first.
+
+It is built for two audiences at once: a human exploring the API interactively, and a CI job that needs stable, parseable output. Every command adapts to which one is running it.
+
+<CardGroup cols={2}>
+  <Card icon="bolt" title="Send usage events">
+    Ingest events and inspect exactly how they metered.
+  </Card>
+  <Card icon="users" title="Manage billing objects">
+    Customers, subscriptions, invoices, plans, wallets, and more.
+  </Card>
+  <Card icon="terminal" title="Script against it">
+    Stable JSON output and documented exit codes.
+  </Card>
+  <Card icon="key" title="Escape hatch">
+    Raw `get`/`post`/`delete` for anything without a named command.
+  </Card>
+</CardGroup>
+
+## Install
+
+<Tabs>
+  <Tab title="Download a release">
+    Grab the archive for your platform from the [latest release](https://github.com/flexprice/cli/releases/latest), extract it, and put the `flexprice` binary somewhere on your `PATH`.
+
+    Builds are published for macOS, Linux, and Windows on both `amd64` and `arm64`.
+
+    ```sh
+    tar -xzf flexprice_*_darwin_arm64.tar.gz
+    sudo mv flexprice /usr/local/bin/
+    ```
+  </Tab>
+  <Tab title="Go install">
+    If you have a Go toolchain:
+
+    ```sh
+    go install github.com/flexprice/cli/cmd/flexprice@latest
+    ```
+
+    <Warning>
+      `go install` places the binary in `$(go env GOPATH)/bin` — commonly `~/go/bin`. If that directory is not on your `PATH`, the install succeeds silently but `flexprice` comes back as **command not found**.
+
+      Check and fix it:
+
+      ```sh
+      echo $PATH | tr ':' '\n' | grep "$(go env GOPATH)/bin"   # prints nothing if missing
+      echo 'export PATH="$(go env GOPATH)/bin:$PATH"' >> ~/.zshrc   # or ~/.bashrc
+      source ~/.zshrc
+      ```
+    </Warning>
+  </Tab>
+</Tabs>
+
+Confirm the install:
+
+```sh
+flexprice version
+```
+
+## Upgrading
+
+Download the new release and replace the binary, or re-run `go install github.com/flexprice/cli/cmd/flexprice@latest`. Either way your configuration and stored keys are untouched.
+
+<Note>
+  `go install ...@latest` resolves through Go's module proxy, which can take a few minutes to index a brand-new release. To install a specific version immediately, pin it: `go install github.com/flexprice/cli/cmd/flexprice@v1.0.1`.
+</Note>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card icon="rocket" title="Quickstart" href="/docs/cli/quickstart">
+    Authenticate and run your first command.
+  </Card>
+  <Card icon="key" title="Authentication" href="/docs/cli/authentication">
+    How keys, environments, and profiles fit together.
+  </Card>
+  <Card icon="flag" title="Global flags" href="/docs/cli/global-flags">
+    Flags every command accepts.
+  </Card>
+  <Card icon="code" title="Output & scripting" href="/docs/cli/output-and-scripting">
+    Exit codes and the machine-facing contract.
+  </Card>
+</CardGroup>

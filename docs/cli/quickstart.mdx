@@ -1,0 +1,127 @@
+---
+title: "Quickstart"
+description: "Authenticate the Flexprice CLI and run your first commands in under five minutes"
+---
+
+This walks through installing the CLI, connecting it to your account, and confirming it points where you think it does.
+
+<Steps>
+  <Step title="Install the CLI">
+    ```sh
+    go install github.com/flexprice/cli/cmd/flexprice@latest
+    ```
+
+    Or download a prebuilt binary — see [Overview](/docs/cli/overview) for all install options.
+  </Step>
+
+  <Step title="Run the guided setup">
+    `flexprice init` walks you through picking a data region and pasting an API key, verifies the key against the API, and stores it in your OS keychain.
+
+    ```sh
+    flexprice init
+    ```
+
+    ```
+    ███████╗██╗     ███████╗██╗  ██╗██████╗ ██████╗ ██╗ ██████╗███████╗
+    ██╔════╝██║     ██╔════╝╚██╗██╔╝██╔══██╗██╔══██╗██║██╔════╝██╔════╝
+    █████╗  ██║     █████╗   ╚███╔╝ ██████╔╝██████╔╝██║██║     █████╗
+    ██╔══╝  ██║     ██╔══╝   ██╔██╗ ██╔═══╝ ██╔══██╗██║██║     ██╔══╝
+    ██║     ███████╗███████╗██╔╝ ██╗██║     ██║  ██║██║╚██████╗███████╗
+    ╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚═╝ ╚═════╝╚══════╝
+    Usage-based billing from your terminal
+
+    Welcome to Flexprice — let's get you set up.
+
+    ? Data region
+      > us      https://us.api.flexprice.io/v1
+        in      https://api.cloud.flexprice.io/v1
+
+    API key: ••••••••••••••••••••
+    ⠹ Verifying your key…
+    ✓ Verified — stored as profile "default"
+    ```
+
+    The region menu is arrow-key driven. To skip both prompts entirely — in CI, for example — pass `--region` and `--api-key`.
+  </Step>
+
+  <Step title="Confirm what you're pointed at">
+    ```sh
+    flexprice whoami
+    ```
+
+    ```
+    Profile:      default
+    Region:       us
+    Base URL:     https://us.api.flexprice.io/v1
+    Key backend:  encrypted file (~/.flexprice/keys)
+    Key:          sk_test_…4b
+    ```
+
+    Worth doing before anything destructive: an API key belongs to exactly one environment, and this is the fastest way to catch pointing at the wrong one.
+  </Step>
+
+  <Step title="See what you can act on">
+    ```sh
+    flexprice resources
+    ```
+
+    Lists every resource and the actions available on it. Then try a read:
+
+    ```sh
+    flexprice customers list
+    ```
+
+    ```
+    ID                NAME          STATUS    CREATED_AT
+    cust_01J8XABCDEF  Ada Lovelace  active    2026-01-02
+    cust_02           Grace Hopper  archived  2026-03-14
+
+    profile: default · region: us · v1.0.1
+    ```
+
+    That footer names which profile and region actually served the request.
+  </Step>
+</Steps>
+
+<Note>
+  The banner, spinners, footers, and confirmation messages all go to **stderr**, never stdout. Piping or redirecting stdout gives you clean data with none of the commentary mixed in.
+</Note>
+
+## Creating something
+
+Most resources take flags directly:
+
+```sh
+flexprice customers create --external_id=acme --email=billing@acme.com
+```
+
+```
+✓ Created customer cust_01J8XGHIJKL
+```
+
+For a request body too deep to express as flags, open it in your editor with the required fields pre-filled:
+
+```sh
+flexprice subscriptions create --edit
+```
+
+Or supply it directly:
+
+```sh
+flexprice subscriptions create --data @subscription.json
+```
+
+<Warning>
+  Destructive actions (`delete`, `void`, `cancel`, `terminate`, `archive`, `finalize`) ask for confirmation first. Off a terminal they **refuse** rather than proceeding — pass `--force` in scripts. See [Output & scripting](/docs/cli/output-and-scripting).
+</Warning>
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card icon="key" title="Authentication" href="/docs/cli/authentication">
+    Manage multiple environments with profiles.
+  </Card>
+  <Card icon="code" title="Output & scripting" href="/docs/cli/output-and-scripting">
+    JSON output, exit codes, and CI usage.
+  </Card>
+</CardGroup>
