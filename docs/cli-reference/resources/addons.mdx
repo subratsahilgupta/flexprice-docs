@@ -1,0 +1,95 @@
+---
+title: "Addons"
+description: "Every addons command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## create
+
+Create addon
+
+| Flag | Type | Required |
+|---|---|---|
+| `--description` | string |  |
+| `--lookup_key` | string | yes |
+| `--name` | string | yes |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice addons create --lookup_key=<value> --name=<value>
+```
+
+## delete
+
+Delete addon
+
+```sh
+flexprice addons delete
+```
+
+## list
+
+Query addons
+
+| Flag | Type | Required |
+|---|---|---|
+| `--end_time` | string |  |
+| `--expand` | string |  |
+| `--limit` | integer |  |
+| `--offset` | integer |  |
+| `--order` | string |  |
+| `--start_time` | string |  |
+| `--status` | string |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `addon_ids` (array)
+- `filters` (array)
+- `lookup_keys` (array)
+- `sort` (array)
+</Note>
+
+```sh
+flexprice addons list
+```
+
+## lookup
+
+Get addon by lookup key
+
+```sh
+flexprice addons lookup
+```
+
+## retrieve
+
+Get addon
+
+```sh
+flexprice addons retrieve
+```
+
+## update
+
+Update addon
+
+| Flag | Type | Required |
+|---|---|---|
+| `--description` | string |  |
+| `--name` | string |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice addons update
+```
+

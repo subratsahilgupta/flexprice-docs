@@ -1,0 +1,74 @@
+---
+title: "Tax Rates"
+description: "Every tax-rates command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## create
+
+Create a tax rate
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--code` | string | yes | code is the unique alphanumeric case sensitive identifier for the tax rate (required) |
+| `--description` | string |  | description is an optional text description providing details about the tax rate |
+| `--fixed_value` | string |  | fixed_value is the fixed monetary amount when tax_rate_type is "fixed" |
+| `--name` | string | yes | name is the human-readable name for the tax rate (required) |
+| `--percentage_value` | string |  | percentage_value is the percentage value (0-100) when tax_rate_type is "percentage" |
+| `--scope` | string |  |  |
+| `--tax_rate_type` | string |  |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice tax-rates create --code=<value> --name=<value>
+```
+
+## delete
+
+Delete a tax rate
+
+```sh
+flexprice tax-rates delete
+```
+
+## list
+
+Get tax rates
+
+```sh
+flexprice tax-rates list
+```
+
+## retrieve
+
+Get a tax rate
+
+```sh
+flexprice tax-rates retrieve
+```
+
+## update
+
+Update a tax rate
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--code` | string |  | code is the updated unique alphanumeric identifier for the tax rate |
+| `--description` | string |  | description is the updated text description for the tax rate |
+| `--name` | string |  | name is the updated human-readable name for the tax rate |
+| `--tax_rate_status` | string |  |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice tax-rates update
+```
+

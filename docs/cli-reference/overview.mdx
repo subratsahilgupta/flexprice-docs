@@ -1,0 +1,52 @@
+---
+title: "Overview"
+description: "Every resource the Flexprice CLI can act on, and the actions available on each"
+---
+
+Commands follow a consistent shape:
+
+```sh
+flexprice <resource> <action> [flags]
+```
+
+Run `flexprice resources` to see this list from your terminal, or `flexprice <resource> --help` for a single resource.
+
+For flags accepted by every command, see [Global flags](/docs/cli/global-flags).
+
+| Resource | Actions |
+|---|---|
+| [Addons](/docs/cli-reference/resources/addons) | `create`, `delete`, `list`, `lookup`, `retrieve`, `update` |
+| [Alert Settings](/docs/cli-reference/resources/alert-settings) | `create`, `delete`, `list`, `retrieve`, `update` |
+| [Alerts](/docs/cli-reference/resources/alerts) | `list` |
+| [Checkout](/docs/cli-reference/resources/checkout) | `create`, `delete`, `retrieve` |
+| [Costs](/docs/cli-reference/resources/costs) | `active`, `analytics`, `analytics-v2`, `create`, `delete`, `list`, `retrieve`, `update` |
+| [Coupon Associations](/docs/cli-reference/resources/coupon-associations) | `list`, `retrieve` |
+| [Coupons](/docs/cli-reference/resources/coupons) | `create`, `delete`, `list`, `lookup`, `retrieve`, `update` |
+| [Credit Grants](/docs/cli-reference/resources/credit-grants) | `create`, `delete`, `for-addon`, `for-plan`, `retrieve`, `update` |
+| [Credit Notes](/docs/cli-reference/resources/credit-notes) | `create`, `finalize`, `retrieve`, `void` |
+| [Customers](/docs/cli-reference/resources/customers) | `by-external-id`, `create`, `delete`, `entitlements`, `entitlements-by-external-id`, `list`, `retrieve`, `subscriptions`, `upcoming-grants`, `update`, `usage` |
+| [Entitlements](/docs/cli-reference/resources/entitlements) | `create`, `create-bulk`, `delete`, `for-addon`, `for-plan`, `list`, `retrieve`, `update` |
+| [Environments](/docs/cli-reference/resources/environments) | `clone` |
+| [Events](/docs/cli-reference/resources/events) | `analytics`, `huggingface-inference`, `ingest`, `ingest-bulk`, `list`, `retrieve`, `usage`, `usage-by-meter` |
+| [Features](/docs/cli-reference/resources/features) | `clone`, `create`, `delete`, `list`, `update` |
+| [Groups](/docs/cli-reference/resources/groups) | `create`, `delete`, `list`, `retrieve` |
+| [Integrations](/docs/cli-reference/resources/integrations) | `config`, `link`, `mappings`, `unlink` |
+| [Invoices](/docs/cli-reference/resources/invoices) | `create`, `customer-summary`, `finalize`, `list`, `payment-attempt`, `payment-status`, `pdf`, `preview`, `recalculate`, `retrieve`, `trigger-comms-webhook`, `update`, `void` |
+| [Payments](/docs/cli-reference/resources/payments) | `create`, `delete`, `list`, `process`, `retrieve`, `update` |
+| [Plans](/docs/cli-reference/resources/plans) | `clone`, `create`, `delete`, `list`, `retrieve`, `sync-prices`, `update` |
+| [Price Units](/docs/cli-reference/resources/price-units) | `create`, `delete`, `list`, `lookup`, `retrieve`, `search`, `update` |
+| [Prices](/docs/cli-reference/resources/prices) | `create`, `create-bulk`, `delete`, `list`, `lookup`, `retrieve`, `update` |
+| [Rbac](/docs/cli-reference/resources/rbac) | `list`, `retrieve` |
+| [Scheduled Tasks](/docs/cli-reference/resources/scheduled-tasks) | `create`, `delete`, `list`, `retrieve`, `run`, `schedule-billing-period-update`, `schedule-draft-finalization`, `update` |
+| [Secrets](/docs/cli-reference/resources/secrets) | `create`, `delete`, `list` |
+| [Subscription Line Items](/docs/cli-reference/resources/subscription-line-items) | `create`, `delete`, `list`, `update` |
+| [Subscription Schedules](/docs/cli-reference/resources/subscription-schedules) | `cancel`, `list`, `list-for-subscription`, `retrieve` |
+| [Subscriptions](/docs/cli-reference/resources/subscriptions) | `activate`, `add-addon`, `addon-associations`, `cancel`, `change-execute`, `change-preview`, `create`, `entitlements`, `execute-subscription-plan-change-v2`, `list`, `modify-execute`, `modify-preview`, `preview-subscription-plan-change-v2`, `remove-addon`, `retrieve`, `retrieve-v2`, `upcoming-grants`, `update`, `usage` |
+| [Tasks](/docs/cli-reference/resources/tasks) | `download`, `list`, `result`, `retrieve`, `update-status` |
+| [Tax Associations](/docs/cli-reference/resources/tax-associations) | `create`, `delete`, `list`, `retrieve`, `update` |
+| [Tax Rates](/docs/cli-reference/resources/tax-rates) | `create`, `delete`, `list`, `retrieve`, `update` |
+| [Tenants](/docs/cli-reference/resources/tenants) | `billing-usage`, `retrieve`, `update` |
+| [Users](/docs/cli-reference/resources/users) | `create`, `delete`, `list`, `me`, `update`, `update-me`, `update-user-roles` |
+| [Wallets](/docs/cli-reference/resources/wallets) | `balance`, `by-customer`, `create`, `list`, `list-for-customer`, `retrieve`, `search-transactions`, `terminate`, `top-up`, `transactions`, `update` |
+| [Workflows](/docs/cli-reference/resources/workflows) | `list` |
+

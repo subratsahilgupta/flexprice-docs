@@ -1,0 +1,148 @@
+---
+title: "Entitlements"
+description: "Every entitlements command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## create
+
+Create entitlement
+
+| Flag | Type | Required |
+|---|---|---|
+| `--aggregation_mode` | string |  |
+| `--end_date` | string |  |
+| `--entity_id` | string |  |
+| `--entity_type` | string |  |
+| `--feature_id` | string | yes |
+| `--feature_type` | string | yes |
+| `--grant_allocation_behavior` | string |  |
+| `--grant_duration_unit` | string |  |
+| `--grant_duration_value` | integer |  |
+| `--grant_measure` | string |  |
+| `--grant_quota` | string |  |
+| `--is_enabled` | boolean |  |
+| `--is_soft_limit` | boolean |  |
+| `--parent_entitlement_id` | string |  |
+| `--plan_id` | string |  |
+| `--start_date` | string |  |
+| `--static_value` | string |  |
+| `--usage_limit` | integer |  |
+| `--usage_reset_period` | string |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `config_value` (object)
+</Note>
+
+```sh
+flexprice entitlements create --feature_id=<value> --feature_type=<value>
+```
+
+## create-bulk
+
+Create entitlements in bulk
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `items` (array)
+</Note>
+
+```sh
+flexprice entitlements create-bulk
+```
+
+## delete
+
+Delete entitlement
+
+```sh
+flexprice entitlements delete
+```
+
+## for-addon
+
+Get addon entitlements
+
+```sh
+flexprice entitlements for-addon
+```
+
+## for-plan
+
+Get plan entitlements
+
+```sh
+flexprice entitlements for-plan
+```
+
+## list
+
+Query entitlements
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--end_time` | string |  |  |
+| `--entity_type` | string |  |  |
+| `--expand` | string |  |  |
+| `--feature_type` | string |  |  |
+| `--has_grant_config` | boolean |  | HasGrantConfig filters on grant-config presence (grant_quota set or not). |
+| `--is_enabled` | boolean |  |  |
+| `--limit` | integer |  |  |
+| `--offset` | integer |  |  |
+| `--order` | string |  |  |
+| `--start_time` | string |  |  |
+| `--status` | string |  |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `entity_ids` (array)
+- `feature_ids` (array)
+- `filters` (array)
+- `plan_ids` (array)
+- `sort` (array)
+</Note>
+
+```sh
+flexprice entitlements list
+```
+
+## retrieve
+
+Get entitlement
+
+```sh
+flexprice entitlements retrieve
+```
+
+## update
+
+Update entitlement
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--aggregation_mode` | string |  |  |
+| `--clear_grant_config` | boolean |  | Grant config — nil fields leave the current value alone. ClearGrantConfig=true wipes the whole grant config (back to a legacy entitlement). |
+| `--grant_allocation_behavior` | string |  |  |
+| `--grant_duration_unit` | string |  |  |
+| `--grant_duration_value` | integer |  |  |
+| `--grant_measure` | string |  |  |
+| `--grant_quota` | string |  |  |
+| `--is_enabled` | boolean |  |  |
+| `--is_soft_limit` | boolean |  |  |
+| `--static_value` | string |  |  |
+| `--usage_limit` | integer |  |  |
+| `--usage_reset_period` | string |  |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `config_value` (object)
+</Note>
+
+```sh
+flexprice entitlements update
+```
+

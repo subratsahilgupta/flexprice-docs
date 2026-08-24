@@ -1,0 +1,93 @@
+---
+title: "Payments"
+description: "Every payments command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## create
+
+Create payment
+
+| Flag | Type | Required |
+|---|---|---|
+| `--amount` | string | yes |
+| `--cancel_url` | string |  |
+| `--currency` | string | yes |
+| `--destination_id` | string | yes |
+| `--destination_type` | string | yes |
+| `--idempotency_key` | string |  |
+| `--payment_gateway` | string |  |
+| `--payment_method_id` | string |  |
+| `--payment_method_type` | string | yes |
+| `--process_payment` | boolean |  |
+| `--save_card_and_make_default` | boolean |  |
+| `--success_url` | string |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `gateway_options` (object)
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice payments create --amount=<value> --currency=<value> --destination_id=<value> --destination_type=<value> --payment_method_type=<value>
+```
+
+## delete
+
+Delete payment
+
+```sh
+flexprice payments delete
+```
+
+## list
+
+List payments
+
+```sh
+flexprice payments list
+```
+
+## process
+
+Process payment
+
+```sh
+flexprice payments process
+```
+
+## retrieve
+
+Get payment
+
+```sh
+flexprice payments retrieve
+```
+
+## update
+
+Update payment
+
+| Flag | Type | Required |
+|---|---|---|
+| `--error_message` | string |  |
+| `--failed_at` | string |  |
+| `--gateway_payment_id` | string |  |
+| `--payment_gateway` | string |  |
+| `--payment_method_id` | string |  |
+| `--payment_status` | string |  |
+| `--refunded_at` | string |  |
+| `--succeeded_at` | string |  |
+| `--voided_at` | string |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice payments update
+```
+

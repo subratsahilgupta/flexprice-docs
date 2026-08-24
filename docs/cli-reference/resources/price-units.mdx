@@ -1,0 +1,103 @@
+---
+title: "Price Units"
+description: "Every price-units command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## create
+
+Create price unit
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--base_currency` | string | yes | base_currency is the currency that the price unit is based on |
+| `--code` | string | yes |  |
+| `--conversion_rate` | string | yes | ConversionRate defines the exchange rate from this price unit to the base currency. This rate is used to convert amounts in the custom price unit to the base currency for storage and billing. Conversion formula: price_unit_amount * conversion_rate = base_currency_amount Example: If conversion_rate = "0.01" and base_currency = "usd": 100 price_unit tokens * 0.01 = 1.00 USD Note: Rounding precision is determined by the base currency (e.g., USD uses 2 decimal places, JPY uses 0). |
+| `--name` | string | yes |  |
+| `--symbol` | string | yes |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice price-units create --base_currency=<value> --code=<value> --conversion_rate=<value> --name=<value> --symbol=<value>
+```
+
+## delete
+
+Delete price unit
+
+```sh
+flexprice price-units delete
+```
+
+## list
+
+List price units
+
+```sh
+flexprice price-units list
+```
+
+## lookup
+
+Get price unit by code
+
+```sh
+flexprice price-units lookup
+```
+
+## retrieve
+
+Get price unit
+
+```sh
+flexprice price-units retrieve
+```
+
+## search
+
+Query price units
+
+| Flag | Type | Required |
+|---|---|---|
+| `--end_time` | string |  |
+| `--expand` | string |  |
+| `--limit` | integer |  |
+| `--offset` | integer |  |
+| `--order` | string |  |
+| `--start_time` | string |  |
+| `--status` | string |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `filters` (array)
+- `price_unit_ids` (array)
+- `sort` (array)
+</Note>
+
+```sh
+flexprice price-units search
+```
+
+## update
+
+Update price unit
+
+| Flag | Type | Required |
+|---|---|---|
+| `--name` | string |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice price-units update
+```
+

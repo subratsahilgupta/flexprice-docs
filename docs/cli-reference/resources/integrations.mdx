@@ -1,0 +1,56 @@
+---
+title: "Integrations"
+description: "Every integrations command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## config
+
+Get integration configurations
+
+```sh
+flexprice integrations config
+```
+
+## link
+
+Link integration mapping
+
+| Flag | Type | Required |
+|---|---|---|
+| `--entity_id` | string | yes |
+| `--entity_type` | string | yes |
+| `--provider_entity_id` | string | yes |
+| `--provider_type` | string | yes |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice integrations link --entity_id=<value> --entity_type=<value> --provider_entity_id=<value> --provider_type=<value>
+```
+
+## mappings
+
+Get entity integration mappings
+
+```sh
+flexprice integrations mappings
+```
+
+## unlink
+
+Delink integration mapping
+
+| Flag | Type | Required |
+|---|---|---|
+| `--entity_id` | string | yes |
+| `--entity_type` | string | yes |
+| `--provider_type` | string | yes |
+
+```sh
+flexprice integrations unlink --entity_id=<value> --entity_type=<value> --provider_type=<value>
+```
+

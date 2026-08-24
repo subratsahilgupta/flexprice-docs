@@ -1,0 +1,160 @@
+---
+title: "Customers"
+description: "Every customers command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## by-external-id
+
+Get customer by external ID
+
+```sh
+flexprice customers by-external-id
+```
+
+## create
+
+Create customer
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--address_city` | string |  | address_city is the city name with maximum 100 characters |
+| `--address_country` | string |  | address_country is the two-letter ISO 3166-1 alpha-2 country code |
+| `--address_line1` | string |  | address_line1 is the primary address line with maximum 255 characters |
+| `--address_line2` | string |  | address_line2 is the secondary address line with maximum 255 characters |
+| `--address_postal_code` | string |  | address_postal_code is the ZIP code or postal code with maximum 20 characters |
+| `--address_state` | string |  | address_state is the state, province, or region name with maximum 100 characters |
+| `--contact` | string |  | contact is an optional contact number for the customer (e.g. phone) |
+| `--email` | string |  | email is the customer's email address and must be a valid email format if provided |
+| `--external_id` | string | yes | external_id is the unique identifier from your system to reference this customer (required) |
+| `--name` | string | yes | name is the full name or company name of the customer |
+| `--onboarding_workflow_name` | string |  | onboarding_workflow_name is given if a custom onboarding workflow is to be triggered for this customer |
+| `--skip_onboarding_workflow` | boolean |  | skip_onboarding_workflow when true, prevents the customer onboarding workflow from being triggered This is used internally when a customer is created via a workflow to prevent infinite loops Default: false |
+| `--timezone` | string |  | timezone is the customer's IANA timezone name (e.g. "Asia/Kolkata", "America/New_York") Defaults to "UTC" if not provided |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `integration_entity_mapping` (array)
+- `metadata` (object)
+- `tax_rate_overrides` (array)
+</Note>
+
+```sh
+flexprice customers create --external_id=<value> --name=<value>
+```
+
+## delete
+
+Delete customer
+
+```sh
+flexprice customers delete
+```
+
+## entitlements
+
+Get customer entitlements
+
+```sh
+flexprice customers entitlements
+```
+
+## entitlements-by-external-id
+
+Get customer entitlements by external ID
+
+```sh
+flexprice customers entitlements-by-external-id
+```
+
+## list
+
+Query customers
+
+| Flag | Type | Required |
+|---|---|---|
+| `--email` | string |  |
+| `--end_time` | string |  |
+| `--expand` | string |  |
+| `--external_id` | string |  |
+| `--limit` | integer |  |
+| `--offset` | integer |  |
+| `--order` | string |  |
+| `--start_time` | string |  |
+| `--status` | string |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `customer_ids` (array)
+- `external_ids` (array)
+- `filters` (array)
+- `metadata` (object)
+- `sort` (array)
+</Note>
+
+```sh
+flexprice customers list
+```
+
+## retrieve
+
+Get customer
+
+```sh
+flexprice customers retrieve
+```
+
+## subscriptions
+
+Get subscriptions for customer by external ID
+
+```sh
+flexprice customers subscriptions
+```
+
+## upcoming-grants
+
+Get upcoming credit grant applications
+
+```sh
+flexprice customers upcoming-grants
+```
+
+## update
+
+Update customer
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--address_city` | string |  | address_city is the updated city name with maximum 100 characters |
+| `--address_country` | string |  | address_country is the updated two-letter ISO 3166-1 alpha-2 country code |
+| `--address_line1` | string |  | address_line1 is the updated primary address line with maximum 255 characters |
+| `--address_line2` | string |  | address_line2 is the updated secondary address line with maximum 255 characters |
+| `--address_postal_code` | string |  | address_postal_code is the updated postal code with maximum 20 characters |
+| `--address_state` | string |  | address_state is the updated state, province, or region name with maximum 100 characters |
+| `--contact` | string |  | contact is the updated contact number for the customer (e.g. phone) |
+| `--email` | string |  | email is the updated email address and must be a valid email format if provided |
+| `--external_id` | string |  | external_id is the updated external identifier for the customer |
+| `--name` | string |  | name is the updated name or company name for the customer |
+| `--timezone` | string |  | timezone is the updated IANA timezone name for the customer (e.g. "Asia/Kolkata", "America/New_York") |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `integration_entity_mapping` (array)
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice customers update
+```
+
+## usage
+
+Get customer usage summary
+
+```sh
+flexprice customers usage
+```
+

@@ -1,0 +1,120 @@
+---
+title: "Plans"
+description: "Every plans command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## clone
+
+Clone a plan
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--description` | string |  | Description overrides the source plan's description when provided |
+| `--display_order` | integer |  | DisplayOrder overrides the source plan's display order when provided |
+| `--lookup_key` | string |  | LookupKey is required and must be unique across published plans |
+| `--name` | string |  | Name is required and must be different from the source plan's name |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice plans clone
+```
+
+## create
+
+Create plan
+
+| Flag | Type | Required |
+|---|---|---|
+| `--description` | string |  |
+| `--display_order` | integer |  |
+| `--lookup_key` | string |  |
+| `--name` | string | yes |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice plans create --name=<value>
+```
+
+## delete
+
+Delete plan
+
+```sh
+flexprice plans delete
+```
+
+## list
+
+Query plans
+
+| Flag | Type | Required |
+|---|---|---|
+| `--end_time` | string |  |
+| `--expand` | string |  |
+| `--limit` | integer |  |
+| `--lookup_key` | string |  |
+| `--offset` | integer |  |
+| `--order` | string |  |
+| `--start_time` | string |  |
+| `--status` | string |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `filters` (array)
+- `metadata` (object)
+- `plan_ids` (array)
+- `sort` (array)
+</Note>
+
+```sh
+flexprice plans list
+```
+
+## retrieve
+
+Get plan
+
+```sh
+flexprice plans retrieve
+```
+
+## sync-prices
+
+Synchronize plan prices
+
+```sh
+flexprice plans sync-prices
+```
+
+## update
+
+Update plan
+
+| Flag | Type | Required |
+|---|---|---|
+| `--description` | string |  |
+| `--display_order` | integer |  |
+| `--lookup_key` | string |  |
+| `--name` | string |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `metadata` (object)
+</Note>
+
+```sh
+flexprice plans update
+```
+

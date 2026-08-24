@@ -1,0 +1,36 @@
+---
+title: "Workflows"
+description: "Every workflows command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## list
+
+Query workflows
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--end_time` | string |  |  |
+| `--entity` | string |  | e.g. plan, invoice, subscription |
+| `--entity_id` | string |  | e.g. plan_01ABC123 |
+| `--expand` | string |  |  |
+| `--limit` | integer |  |  |
+| `--offset` | integer |  |  |
+| `--order` | string |  |  |
+| `--start_time` | string |  |  |
+| `--status` | string |  |  |
+| `--task_queue` | string |  |  |
+| `--workflow_id` | string |  | Workflow-specific filters |
+| `--workflow_status` | string |  | e.g. Running, Completed, Failed |
+| `--workflow_type` | string |  |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `filters` (array)
+- `sort` (array)
+</Note>
+
+```sh
+flexprice workflows list
+```
+

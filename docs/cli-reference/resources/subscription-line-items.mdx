@@ -1,0 +1,119 @@
+---
+title: "Subscription Line Items"
+description: "Every subscription-line-items command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## create
+
+Create subscription line item
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--commitment_amount` | number |  | Commitment fields |
+| `--commitment_duration` | string |  |  |
+| `--commitment_overage_factor` | number |  |  |
+| `--commitment_quantity` | number |  |  |
+| `--commitment_true_up_enabled` | boolean |  |  |
+| `--commitment_type` | string |  |  |
+| `--commitment_windowed` | boolean |  |  |
+| `--display_name` | string |  |  |
+| `--end_date` | string |  |  |
+| `--price_id` | string |  | PriceID references an existing price (plan, addon, or subscription-scoped). Exactly one of price_id or price must be set. |
+| `--proration_behavior` | string |  |  |
+| `--quantity` | number |  |  |
+| `--start_date` | string |  |  |
+| `--subscription_phase_id` | string |  |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `commitment_time_buckets` (array)
+- `metadata` (object)
+- `price` (object)
+</Note>
+
+```sh
+flexprice subscription-line-items create
+```
+
+## delete
+
+Delete subscription line item
+
+| Flag | Type | Required |
+|---|---|---|
+| `--effective_from` | string |  |
+| `--proration_behavior` | string |  |
+
+```sh
+flexprice subscription-line-items delete
+```
+
+## list
+
+Search subscription line items
+
+| Flag | Type | Required |
+|---|---|---|
+| `--active_filter` | boolean |  |
+| `--current_period_start` | string |  |
+| `--end_time` | string |  |
+| `--entity_type` | string |  |
+| `--expand` | string |  |
+| `--limit` | integer |  |
+| `--offset` | integer |  |
+| `--order` | string |  |
+| `--start_time` | string |  |
+| `--status` | string |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `addon_association_ids` (array)
+- `billing_periods` (array)
+- `currencies` (array)
+- `customer_ids` (array)
+- `entity_ids` (array)
+- `filters` (array)
+- `meter_ids` (array)
+- `price_ids` (array)
+- `sort` (array)
+- `subscription_ids` (array)
+- `subscription_line_item_ids` (array)
+</Note>
+
+```sh
+flexprice subscription-line-items list
+```
+
+## update
+
+Update subscription line item
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--amount` | string |  | Amount is the new price amount that overrides the original price |
+| `--billing_model` | string |  |  |
+| `--commitment_amount` | number |  | Commitment fields |
+| `--commitment_duration` | string |  |  |
+| `--commitment_overage_factor` | number |  |  |
+| `--commitment_quantity` | number |  |  |
+| `--commitment_true_up_enabled` | boolean |  |  |
+| `--commitment_type` | string |  |  |
+| `--commitment_windowed` | boolean |  |  |
+| `--effective_from` | string |  | EffectiveFrom for the existing line item (if not provided, defaults to now) |
+| `--tier_mode` | string |  |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `commitment_time_buckets` (array)
+- `metadata` (object)
+- `tiers` (array)
+- `transform_quantity` (object)
+</Note>
+
+```sh
+flexprice subscription-line-items update
+```
+

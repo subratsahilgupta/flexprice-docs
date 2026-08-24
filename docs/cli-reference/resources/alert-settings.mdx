@@ -1,0 +1,88 @@
+---
+title: "Alert Settings"
+description: "Every alert-settings command in the Flexprice CLI, with flags, required fields and examples."
+---
+
+## create
+
+Create alert settings
+
+| Flag | Type | Required | Description |
+|---|---|---|---|
+| `--entity_id` | string | yes | entity_id is the id of the monitored entity: subscription id, subscription_line_item id, or group id, matching entity_type. |
+| `--entity_type` | string | yes |  |
+| `--parent_entity_id` | string |  | parent_entity_id is the subscription id that owns a line-item or group alert. Required when entity_type is "subscription_line_item" or "group"; omitted for subscription-level alerts. |
+| `--parent_entity_type` | string |  |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `config` (object)
+</Note>
+
+```sh
+flexprice alert-settings create --entity_id=<value> --entity_type=<value>
+```
+
+## delete
+
+Delete alert settings
+
+```sh
+flexprice alert-settings delete
+```
+
+## list
+
+Query alert settings
+
+| Flag | Type | Required |
+|---|---|---|
+| `--enabled` | boolean |  |
+| `--end_time` | string |  |
+| `--entity_id` | string |  |
+| `--entity_type` | string |  |
+| `--expand` | string |  |
+| `--limit` | integer |  |
+| `--offset` | integer |  |
+| `--order` | string |  |
+| `--parent_entity_id` | string |  |
+| `--parent_entity_type` | string |  |
+| `--start_time` | string |  |
+| `--status` | string |  |
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `entity_ids` (array)
+- `filters` (array)
+- `parent_entity_ids` (array)
+- `sort` (array)
+</Note>
+
+```sh
+flexprice alert-settings list
+```
+
+## retrieve
+
+Get alert settings
+
+```sh
+flexprice alert-settings retrieve
+```
+
+## update
+
+Update alert settings
+
+<Note>
+These fields are nested and cannot be set with flags. Use `--edit` to fill in a pre-built request body, or `--data @file.json`.
+
+- `config` (object)
+</Note>
+
+```sh
+flexprice alert-settings update
+```
+
