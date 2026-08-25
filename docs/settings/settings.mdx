@@ -15,11 +15,12 @@ Settings in Flexprice control behavior for respective environment against tenant
 
 ## Available Settings
 
-Flexprice supports three setting keys:
+Flexprice supports the following setting keys:
 
 - **Subscription Configuration** (`subscription_config`) — Controls subscription auto-cancellation for unpaid invoices
 - **Invoice Configuration** (`invoice_config`) — Controls invoice number generation and due date calculation
 - **Wallet Balance Alert Configuration** (`wallet_balance_alert_config`) —  Wallet balance alert thresholds configurations per tenant per environment
+- **Bonus Credits Topup Configuration** (`bonus_credits_topup_config`) — Slab-based bonus credit rules applied automatically to purchased wallet top-ups
 
 ---
 
@@ -188,6 +189,64 @@ When no custom value is stored (or after DELETE), the default is:
 
 Once a wallet is using alert config (either its own or this default), behavior matches [Wallet Sentinel Alerts](/docs/wallet/low-balance-alert): balance is monitored against the thresholds, **Info** / **Warning** / **Critical** are raised when thresholds are crossed, state is updated on the wallet, and webhooks are sent when alert state changes.
 
+---
+
+## Bonus Credits Topup Configuration
+
+**Key:** `bonus_credits_topup_config`
+
+Defines slab-based rules for granting bonus credits automatically on purchased wallet top-ups. When enabled, a top-up's credit amount is matched against a table of thresholds, and the matching slab's bonus is granted alongside the purchase.
+
+### Schema
+
+```json
+{
+  "enabled": boolean,
+  "slabs": [
+    {
+      "threshold": string,
+      "operator": "gte",
+      "bonus": { "type": "flat" | "percentage", "value": string },
+      "expiration_duration": number,
+      "expiration_duration_unit": "DAY" | "WEEK" | "MONTH" | "YEAR"
+    }
+  ]
+}
+```
+
+- **`enabled`** — Required. Boolean. Turn automatic slab-based bonus resolution on or off for this tenant and environment.
+- **`slabs`** — Required and non-empty if `enabled` is `true`; optional otherwise. Array of slab objects, evaluated in list order, so they must be sorted **descending** by `threshold`. The first slab a top-up's credit amount clears is the one that applies.
+  - **`threshold`** — Required. Decimal string ≥ 0. The credit amount being purchased is compared against this value.
+  - **`operator`** — Required. Only `gte` is accepted; the top-up's credit amount must be greater than or equal to `threshold` to match.
+  - **`bonus.type`** — Required. `flat` or `percentage`.
+  - **`bonus.value`** — Required. Decimal string ≥ 0. For `flat`, this is the bonus credit amount added as-is. For `percentage`, this is a percentage of the credits being purchased.
+  - **`expiration_duration`** / **`expiration_duration_unit`** — Optional; must be set together or not at all. Sets an expiry for bonus credits granted from this slab, unless the top-up request already sets `bonus_credits_expiry_date_utc` explicitly. Unit is one of `DAY`, `WEEK`, `MONTH`, `YEAR`.
+
+### Default Values
+
+When creating a new setting via API, defaults are:
+
+```json
+{
+  "enabled": false,
+  "slabs": []
+}
+```
+
+### What Happens When Enabled
+
+- **Applies only to purchased credits** — Slab resolution runs only for top-ups with `transaction_reason` set to `PURCHASED_CREDIT_DIRECT` or `PURCHASED_CREDIT_INVOICED` (including pay-first checkout). Free credit top-ups never receive a bonus.
+- **Manual override skips resolution** — If the top-up request sets `bonus_credits_to_add` directly, slab resolution does not run for that top-up.
+- **Bonus is a separate transaction** — The bonus is recorded as its own wallet transaction with `transaction_reason: PURCHASED_CREDIT_BONUS`, linked to the purchase transaction via `parent_transaction_id`. It shares the purchase transaction's status and completes with it.
+
+See [Top-Up Wallet](/docs/wallet/top-up#bonus-credits-on-top-up) for how slabs resolve against a purchase, the manual override, and how the bonus transaction is recorded. See the [Top-Up Wallet API Reference](/api-reference/wallets/top-up-wallet) for the `bonus_credits_to_add` and `bonus_credits_expiry_date_utc` request fields.
+
+### Validation
+
+- **New settings:** `enabled` required, boolean. If `enabled` is `true`, `slabs` required, non-empty.
+- **Slab constraints:** `operator` must be `gte`; `threshold` ≥ 0; `bonus.type` one of `flat`, `percentage`; `bonus.value` ≥ 0; `expiration_duration` and `expiration_duration_unit` must both be set or both omitted; slabs must be sorted strictly descending by `threshold`.
+- **Updates:** Partial updates allowed; only provided fields validated; omitted fields unchanged.
+
 ## API Endpoints
 
 ### Get Setting
@@ -319,6 +378,12 @@ DELETE /v1/settings/:key
 - **Disable alerts globally** — Turn off async consumer for that environment by setting `alert_enabled: false`
 - **Fallback for wallets without config** — Wallets with no `alert_settings` use this default
 
+### Bonus Credits on Top-Up
+
+- **Volume incentives** — Grant a larger bonus on bigger top-ups (e.g. 10% bonus at $200+) to encourage customers to purchase more credits at once
+- **Flat promotional bonus** — Grant a fixed bonus amount for top-ups that clear a lower threshold (e.g. 50 bonus credits at $100+)
+- **Automatic, no per-request work** — Configure the slab table once; the bonus is resolved on every purchased-credit top-up without callers passing bonus fields
+
 ---
 
 ## Best Practices
@@ -341,10 +406,13 @@ DELETE /v1/settings/:key
 
 💡 **Combine with per-wallet alerts** — Set `wallet_balance_alert_config` as the default, then override on specific wallets via [Wallet Sentinel Alerts](/docs/wallet/low-balance-alert) where you need different thresholds.
 
+💡 **Sort slabs descending, and use round thresholds** — Since the first matching slab wins, keep `slabs` sorted from highest to lowest `threshold` and pick thresholds that make the applicable bracket predictable at a glance.
+
 ---
 
 ## Related Documentation
 
 - [Wallet Sentinel Alerts](/docs/wallet/low-balance-alert) — Configure per-wallet balance alerts
+- [Top-Up Wallet](/docs/wallet/top-up#bonus-credits-on-top-up) — Slab-based and manual bonus credits on purchased wallet top-ups
 - [Subscriptions](/docs/subscriptions/customers-create-subscription) — Manage customer subscriptions
 - [Invoices](/docs/invoices/overview) — Invoice lifecycle and payment tracking

@@ -157,7 +157,7 @@ You can either `Record Payment` or `Update Payment Status` directly to confirm p
   For complete transaction lifecycle details, check out [Purchased Credits (Invoiced)](/docs/wallet/transactions#purchased-credits-invoiced) in the Wallet Transactions documentation.
 
   <Warning>
-    **Payment Gateway Required** — Payment recording requires a configured payment gateway. For Example, Refer to [Stripe Connection Setup](/integrations/stripe/connection-setup) for configuration instructions.
+    **Payment Gateway Required** : Payment recording requires a configured payment gateway. For Example, Refer to [Stripe Connection Setup](/integrations/stripe/connection-setup) for configuration instructions.
   </Warning>
 
 ### Credit Activation
@@ -243,11 +243,82 @@ To attempt a charge against a payment method the customer has already authorized
 
 ---
 
+## Bonus Credits on Top-Up
+
+Purchased credit top-ups (`PURCHASED_CREDIT_DIRECT` and `PURCHASED_CREDIT_INVOICED`, including pay-first checkout) can grant an extra bonus credit alongside the purchase. Free credit top-ups never receive a bonus. 
+<Info>
+  The bonus is resolved automatically from a slab table, or set directly on the request.
+</Info>
+
+Each slab grants its bonus as one of two types:
+
+- **`flat`** : a fixed number of bonus credits, regardless of purchase size
+- **`percentage`** : a percentage of the credits being purchased
+
+### Automatic Slab-Based Bonus
+
+Configure the [Bonus Credits Topup Configuration](/docs/settings/settings#bonus-credits-topup-configuration) setting with a table of slabs, each mapping a purchase threshold to a bonus:
+
+```json
+PUT /v1/settings/bonus_credits_topup_config
+{
+  "value": {
+    "enabled": true,
+    "slabs": [
+      { "threshold": "200", "operator": "gte", "bonus": { "type": "percentage", "value": "10" } },
+      { "threshold": "100", "operator": "gte", "bonus": { "type": "flat", "value": "50" } }
+    ]
+  }
+}
+```
+
+When a purchased credit top-up runs, Flexprice matches `credits_to_add` against the slabs and grants the bonus from the first one it clears:
+
+- A top-up of `250` credits clears the `200` threshold first and gets a **10% bonus** (`25` bonus credits)
+- A top-up of `150` credits does not clear `200` but clears `100`, and gets a **flat 50 bonus credits**
+- A top-up of `50` credits does not clear any threshold and gets no bonus
+
+<Note>
+  Slabs are evaluated in list order and the first match wins, so `slabs` must be sorted **descending** by `threshold`. Only the `gte` operator is supported.
+</Note>
+
+### Manual Override
+
+To grant a specific bonus instead of resolving it from slabs, set `bonus_credits_to_add` on the top-up request.
+
+<Note>
+  Setting `bonus_credits_to_add` grants that amount as-is and skips slab resolution entirely for that top-up. When the field isn't set, Flexprice resolves the bonus from the slab table instead, and if no slab matches, no bonus is granted.
+</Note>
+
+See the [Top-Up Wallet API reference](/api-reference/wallets/top-up-wallet) for the full request and response schema.
+
+### Bonus Credit Expiry
+
+Bonus credits can expire independently of the purchased credits they came with. Set `bonus_credits_expiry_date_utc` (an RFC3339 UTC timestamp) on the request to expire the bonus at a specific time; it's rejected if it's in the past, and only takes effect when a bonus is actually granted.
+
+<Note>
+  If the request doesn't set `bonus_credits_expiry_date_utc`, and the matched slab defines `expiration_duration` and `expiration_duration_unit` (`DAY`, `WEEK`, `MONTH`, or `YEAR`, both required together), the bonus expires that long after it's granted instead. If neither is set, the bonus credits don't expire.
+</Note>
+
+### How the Bonus Is Recorded
+
+The bonus is not merged into the purchase. It is created as its own wallet transaction:
+
+- **`transaction_reason`**: `PURCHASED_CREDIT_BONUS`
+- **`parent_transaction_id`**: the ID of the purchase transaction it's linked to
+- **`transaction_status`**: mirrors the purchase transaction's status. For a direct top-up both complete immediately; for an invoiced or pay-first top-up, the bonus stays `pending` until the purchase transaction completes, then both complete together
+
+<Note>
+  The [top-up wallet](/api-reference/wallets/top-up-wallet) response only returns the purchase transaction in `wallet_transaction`. Bonus credits do not appear there. Look up wallet transactions filtered by `parent_transaction_id` or `transaction_reason: "PURCHASED_CREDIT_BONUS"` to see the bonus. Once both transactions complete, `wallet.balance` reflects the purchase and the bonus together.
+</Note>
+
 ## Related Documentation
 
 - [Wallet Transactions](/docs/wallet/transactions) - Monitor and manage all wallet transactions
 - [Auto Top-Up Wallet](/docs/wallet/auto-top-up) - Configure automatic wallet recharging
 - [Low Balance Alert](/docs/wallet/low-balance-alert) - Set up balance threshold notifications
 - [Pay-First Checkout](/docs/checkout/pay-first-checkout) - Gate a top-up behind a successful payment
+- [Settings](/docs/settings/settings#bonus-credits-topup-configuration) - Configure automatic bonus credit slabs
+- [Top-Up Wallet API Reference](/api-reference/wallets/top-up-wallet) - Full request and response schema
 
 ---
