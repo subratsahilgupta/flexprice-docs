@@ -3,7 +3,7 @@ title: "Configure Tax Rates"
 description: "Create and manage reusable tax rate definitions in flexprice."
 ---
 
-A tax rate is a reusable definition. You create it once with a unique `code`, then reference that `code` whenever you link it to a customer, subscription, or tenant.
+A tax rate is a reusable definition of a percentage you collect. You create it once and reference it by `code` wherever you apply it.
 
 ## Create a tax rate
 
@@ -35,17 +35,17 @@ curl -X POST https://us.api.flexprice.io/v1/taxes/rates \
 }
 ```
 
-## Request fields
+Required properties:
 
-| Field              | Type           | Required                        | Description                                                           |
-| ------------------ | -------------- | ------------------------------- | --------------------------------------------------------------------- |
-| `name`             | string         | Yes                             | Display name shown in invoices and the dashboard                      |
-| `code`             | string         | Yes                             | Unique identifier used in associations. **Immutable after creation.** |
-| `tax_rate_type`    | string         | Yes                             | `percentage` or `fixed`                                               |
-| `percentage_value` | decimal string | When `tax_rate_type=percentage` | Rate as a percent, e.g. `"8.25"` for 8.25%                            |
-| `fixed_value`      | decimal string | When `tax_rate_type=fixed`      | Flat amount added per invoice, e.g. `"5.00"`                          |
-| `description`      | string         | No                              | Notes for your own reference                                          |
-| `metadata`         | object         | No                              | Key-value pairs for your own tracking                                 |
+- The `name` appears on your customer's invoice. Use a short label for the kind of tax, such as `Sales Tax`, `VAT`, or `GST`.
+- The `code` is your unique identifier for the rate. You pass this `code`, not the ID, whenever you link the rate to a customer or subscription.
+- The `percentage_value` is the percentage to collect, between `0` and `100`. Pass it as a string, for example `"8.25"` for 8.25%.
+- The `tax_rate_type` is always `percentage`.
+
+Optional properties:
+
+- The `description` stores notes for your own reference. Your customers do not see it.
+- The `metadata` object stores your own key-value pairs on the rate.
 
 <Warning>
   The `code` field is immutable. Choose it carefully since it is the key used in
@@ -53,21 +53,7 @@ curl -X POST https://us.api.flexprice.io/v1/taxes/rates \
   your associations to it.
 </Warning>
 
-## Create a fixed-amount tax rate
-
-Use `tax_rate_type: fixed` when you need to add a flat fee to every invoice regardless of the subtotal, such as a regulatory levy.
-
-```bash
-curl -X POST https://us.api.flexprice.io/v1/taxes/rates \
-  -H "x-api-key: <API_KEY>" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Regulatory Fee",
-    "code": "FEE_REG_US",
-    "tax_rate_type": "fixed",
-    "fixed_value": "5.00"
-  }'
-```
+A rate on its own collects nothing. It starts applying once you [associate it with a customer or subscription](/docs/product-catalogue/taxes/apply), which is also where you decide whether it is inclusive or exclusive.
 
 ## List tax rates
 
@@ -116,4 +102,4 @@ curl -X DELETE https://us.api.flexprice.io/v1/taxes/rates/<tax_rate_id> \
 
 ## Next step
 
-Once you have a tax rate, [apply it to a customer or subscription](/docs/product-catalogue/taxes/apply).
+<Card icon="book-open" horizontal={true} href="/docs/product-catalogue/taxes/apply" title="Apply Tax to Customers and Subscriptions" />

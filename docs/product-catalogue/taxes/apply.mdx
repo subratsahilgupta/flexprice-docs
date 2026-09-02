@@ -1,9 +1,15 @@
 ---
 title: "Apply Tax to Customers and Subscriptions"
-description: "Link tax rates to tenants, customers, and subscriptions. Manage post-creation changes via the subscription modification API."
+description: "Link tax rates to tenants, customers and subscriptions, and choose whether each is added to the price or included in it"
 ---
 
-A **tax association** is the link between a tax rate and an entity. flexprice supports associations at three scopes: tenant (default for all customers), customer (overrides tenant for that customer), and subscription (overrides customer for that subscription's invoices).
+A **tax association** is what makes a tax rate collect: it associates the rate with an entity, and carries the two decisions that matter, which rate applies and whether that rate is added on top of your price (`exclusive`) or already inside it (`inclusive`). Flexprice supports associations at three scopes: tenant (default for all customers), customer (overrides tenant for that customer), and subscription (overrides customer for that subscription's invoices).
+
+| Level | Use it when |
+|-------|-------------|
+| Tenant | Every customer you bill pays this tax by default |
+| Customer | This customer pays a tax the rest do not, or is in a different jurisdiction |
+| Subscription | One subscription needs different tax treatment from the rest of the customer's |
 
 ## Association fields
 
@@ -14,6 +20,7 @@ A **tax association** is the link between a tax rate and an entity. flexprice su
 | `entity_id`            | string    | No       | ID of the entity to link                                                            |
 | `external_customer_id` | string    | No       | Your own customer ID, usable instead of `entity_id` for customer-level associations |
 | `auto_apply`           | bool      | No       | Set to `true` to apply this tax automatically on every new invoice                  |
+| `tax_behavior`         | string    | No       | `inclusive` or `exclusive`. Resolved from the subscription's currency if omitted.   |
 | `priority`             | int       | No       | Lower number fires first. Default: `0`                                              |
 | `currency`             | string    | No       | Scopes this association to a specific currency, e.g. `"USD"`                        |
 | `start_date`           | timestamp | No       | When the association becomes active. Defaults to now.                               |
@@ -33,6 +40,7 @@ curl -X POST https://us.api.flexprice.io/v1/taxes/associations \
     "entity_id": "<your_tenant_id>",
     "auto_apply": true,
     "currency": "USD",
+    "tax_behavior": "inclusive",
     "priority": 0
   }'
 ```
@@ -47,6 +55,7 @@ curl -X POST https://us.api.flexprice.io/v1/taxes/associations \
   "entity_id": "<your_tenant_id>",
   "auto_apply": true,
   "currency": "USD",
+  "tax_behavior": "inclusive",
   "priority": 0
 }
 ```
@@ -65,6 +74,7 @@ curl -X POST https://us.api.flexprice.io/v1/taxes/associations \
     "external_customer_id": "your-customer-id",
     "auto_apply": true,
     "currency": "EUR",
+    "tax_behavior": "exclusive",
     "priority": 0
   }'
 ```
@@ -84,7 +94,8 @@ curl -X POST https://us.api.flexprice.io/v1/subscriptions \
     "tax_rate_overrides": [
       {
         "tax_rate_code": "TAX_US_CA",
-        "currency": "USD"
+        "currency": "USD",
+        "tax_behavior": "exclusive"
       }
     ]
   }'
@@ -102,6 +113,7 @@ curl -X POST https://us.api.flexprice.io/v1/subscriptions \
 | --------------- | ------ | -------- | -------------------------------------- |
 | `tax_rate_code` | string | Yes      | The `code` of the tax rate to link     |
 | `currency`      | string | Yes      | ISO currency code, e.g. `"USD"`        |
+| `tax_behavior`  | string | No       | `inclusive` or `exclusive`. Resolved from the subscription's currency if omitted. |
 | `auto_apply`    | bool   | No       | Defaults to `true`                     |
 | `priority`      | int    | No       | Lower number fires first. Default: `0` |
 | `metadata`      | object | No       | Key-value pairs for your own tracking  |
@@ -205,7 +217,7 @@ curl -X POST https://us.api.flexprice.io/v1/taxes/associations \
   }'
 ```
 
-If the taxable amount is $100, state at 6% adds $6 and federal at 2% adds $2 for a total tax of $8. They do not compound.
+If the taxable amount is \$100, state at 6% adds \$6 and federal at 2% adds \$2 for a total tax of \$8. They do not compound.
 
 ## List associations
 
@@ -216,7 +228,7 @@ curl "https://us.api.flexprice.io/v1/taxes/associations?entity_type=customer&ent
 
 ## Update an association
 
-You can update `priority`, `auto_apply`, and `metadata` without deleting and recreating.
+You can update `priority`, `auto_apply`, `tax_behavior`, and `metadata` without deleting and recreating.
 
 ```bash
 curl -X PUT https://us.api.flexprice.io/v1/taxes/associations/<tax_association_id> \
@@ -228,14 +240,3 @@ curl -X PUT https://us.api.flexprice.io/v1/taxes/associations/<tax_association_i
 ```
 
 Setting `auto_apply: false` pauses the tax without removing the record. Set it back to `true` to re-enable.
-
-## Common patterns
-
-**Exempt a specific customer from tax**
-Create no customer-level associations and ensure no tenant associations set to auto-apply are inherited. Customers with no resolvable active association generate invoices with zero tax.
-
-**Give one subscription different tax treatment**
-Use `tax_rate_overrides` at subscription creation. The customer's associations remain unchanged for their other subscriptions.
-
-**Stop a tax mid-lifecycle**
-Use the modification API with `action: "remove"`. Pass the `tax_association_id` from listing the subscription's associations.
